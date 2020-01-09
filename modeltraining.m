@@ -51,12 +51,40 @@ end
 % Convert array to table and add headings
 burglaryProbabilities = array2table(burg,...
     'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'Class 4' 'total'});
+disp("----------- Burglary probabilities ----------- ");
 disp(burglaryProbabilities);
 
 % -----------------Wealth index class probabilities -------------------
+% Set ranges in new array to be used for probabilities
+maxIndex = max(trainingData.Mean_Index);
+index = [0,0,0,0,0,0;];
+for j = 1:4
+    index(j,1) = maxIndex/4 * j;
+end
 
+% Counting number of classes in each range
+for k = 1:height(trainingData)
+    for l = 1:4
+        if (trainingData(k,:).Mean_Index <= index(l,1))
+            index(l,trainingData(k,:).class +1 ) = index(l,trainingData(k,:).class + 1) + 1;
+            index(l,6) = index(l,6)+1;
+            break;
+        end
+    end
+end
 
+% Calculating probabilities
+for l = 1:4
+    for m = 2:5
+        index(l,m) = index(l,m)/ index(l,6);
+    end
+end
 
+% Convert array to table and add headings
+indexProbabilities = array2table(index,...
+    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'Class 4' 'total'});
+disp("----------- Index probabilities ----------- ");
+disp(indexProbabilities);
 
 
 %FREQUENCY TABLE CREATION TO BE USED WITH NAIVE BAYES 
