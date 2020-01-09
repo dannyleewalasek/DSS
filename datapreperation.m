@@ -24,3 +24,4 @@ disp(meanIndexPerPostcode);
 
 % Save output
 writetable(meanIndexPerPostcode);
+clear;

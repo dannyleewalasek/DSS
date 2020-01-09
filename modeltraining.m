@@ -92,12 +92,17 @@ burglaryProbabilities = array2table(burg,...
 indexProbabilities = array2table(index,...
     'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'Class 4' 'total'});
 
+% Save tables to file which make up our model
+writetable(burglaryProbabilities);
+writetable(indexProbabilities);
+
 % Display results
 disp("----------- Burglary probabilities ----------- ");
 disp(burglaryProbabilities);
 disp("----------- Index probabilities ----------- ");
 disp(indexProbabilities);
 
+clear;
 
 %FREQUENCY TABLE CREATION TO BE USED WITH NAIVE BAYES 
 %Save training data with class identification

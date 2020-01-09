@@ -1,2 +1,7 @@
-%%Likelyhood table, likely hood of being in each class dependant on index range or burglary number
-%Naive Bayes
+%Naive bayes
+
+%postcode,house price, contents, numofburglarys
+inputRow = ['LS1 PRO',250000,5000,5];
+
+% %chance of being in class 1:
+% pr
