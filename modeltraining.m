@@ -22,23 +22,42 @@ for c = 1:height(trainingData)
     end
 end
 
-burg = [0,0,0,0,0;
-        0,0,1,0,0;
-        0,0,2,0,0;
-        0,0,0,0,0];
+% -----------------Burglary class probabilities -------------------
+% Set ranges in new array to be used for probabilities
+maxBurglarys = max(trainingData.BurglaryCount);
+burg = [0,0,0,0,0,0;];
 for e = 1:4
-    burg(c,1) = 1/4 * e;
+    burg(e,1) = maxBurglarys/4 * e;
 end
 
-%2 tables, one with burglary numbers say 0-5, 5-10, etc 4 of them, 
-%with likelyhood of being in each class
-%second table is with index ranges 4 of them and likelyhood
-% of being in each class
+% Counting number of classes in each range
+for f = 1:height(trainingData)
+    for g = 1:4
+        if (trainingData(f,:).BurglaryCount <= burg(g,1))
+            burg(g,trainingData(f,:).class +1 ) = burg(g,trainingData(f,:).class + 1) + 1;
+            burg(g,6) = burg(g,6)+1;
+            break;
+        end
+    end
+end
 
-%Num of burglarys probability e.g:
-%Range | P(class1) | P(class2) | P(class3) | P(class4)
-%-----------------------------------------------------
-%0 - 5 | 0.2       |0.1        | 0.6       | 0.1
+% Calculating probabilities
+for h = 1:4
+    for i = 2:5
+        burg(h,i) = burg(h,i)/ burg(h,6);
+    end
+end
+
+% Convert array to table and add headings
+burglaryProbabilities = array2table(burg,...
+    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'Class 4' 'total'});
+disp(burglaryProbabilities);
+
+% -----------------Wealth index class probabilities -------------------
+
+
+
+
 
 %FREQUENCY TABLE CREATION TO BE USED WITH NAIVE BAYES 
 %Save training data with class identification
