@@ -25,4 +25,7 @@ for c = 1:height(trainingData)
     end
 end
 
-%FREQUENCY TABLE CREATION TO BE USED WITH NAIVE BAYES
+%FREQUENCY TABLE CREATION TO BE USED WITH NAIVE BAYES 
+%Save training data with class identification
+%Save frequency table
+%These make the model.
