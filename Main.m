@@ -1,2 +1,4 @@
 datapreperation;
 modeltraining;
+%accuracyTest
+%classifyNewData
