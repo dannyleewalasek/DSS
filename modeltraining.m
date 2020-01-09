@@ -24,3 +24,5 @@ for c = 1:height(trainingData)
         end
     end
 end
+
+%FREQUENCY TABLE CREATION TO BE USED WITH NAIVE BAYES
