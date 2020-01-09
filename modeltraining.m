@@ -14,7 +14,6 @@ plot(C(:,1),C(:,2),'b*','MarkerSize',5);
 for c = 1:height(trainingData)
     minDistance = 99999999999999999999999999;
     for d = 1:size(C)
-        disp(sqrt((C(d,1) - trainingData(c,:).BurglaryCount).^2 + (C(d,2) - trainingData(c,:).Mean_Index).^2));
         if sqrt((C(d,1) - trainingData(c,:).BurglaryCount).^2 + (C(d,2) - trainingData(c,:).Mean_Index).^2) < minDistance
             trainingData(c,:).class = d;
             minDistance = sqrt((C(d,1) - trainingData(c,:).BurglaryCount).^2 + (C(d,2) - trainingData(c,:).Mean_Index).^2);
@@ -48,12 +47,6 @@ for h = 1:4
     end
 end
 
-% Convert array to table and add headings
-burglaryProbabilities = array2table(burg,...
-    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'Class 4' 'total'});
-disp("----------- Burglary probabilities ----------- ");
-disp(burglaryProbabilities);
-
 % -----------------Wealth index class probabilities -------------------
 % Set ranges in new array to be used for probabilities
 maxIndex = max(trainingData.Mean_Index);
@@ -80,9 +73,28 @@ for l = 1:4
     end
 end
 
+% Replace NAN's with 0.25, this is because they only appear in a row with
+% all NaN's
+for n = 1:4
+    for o = 2:6
+        if isnan(burg(n,o))
+            burg(n,o) = 0.25;
+        end
+        if isnan(index(n,o))
+            index(n,o) = 0.25;
+        end
+    end
+end
+
 % Convert array to table and add headings
+burglaryProbabilities = array2table(burg,...
+    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'Class 4' 'total'});
 indexProbabilities = array2table(index,...
     'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'Class 4' 'total'});
+
+% Display results
+disp("----------- Burglary probabilities ----------- ");
+disp(burglaryProbabilities);
 disp("----------- Index probabilities ----------- ");
 disp(indexProbabilities);
 
