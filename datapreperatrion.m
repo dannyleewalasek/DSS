@@ -21,4 +21,6 @@ meanIndexPerPostcode = varfun(@mean,consolidatedData,'InputVariables','index',..
 meanIndexPerPostcode.Properties.VariableNames = {'PostCode','BurglaryCount','Mean_Index'};
 meanIndexPerPostcode.PostCode = [];
 disp(meanIndexPerPostcode);
-scatter(meanIndexPerPostcode.BurglaryCount,meanIndexPerPostcode.Mean_Index)
+
+% Save output
+writetable(meanIndexPerPostcode);
