@@ -7,7 +7,9 @@ burglaryOnly = crimeRates(crimeRates.CrimeType == "Burglary",:);
 cleanHousePrices = housePrices(housePrices.HousePrice > 10000,:);
 consolidatedData = innerjoin(cleanHousePrices,burglaryOnly);
 % Data Cleaning
+
 % Remove Null values
+
 % Remove duplicates
 
 % Data Transformation
