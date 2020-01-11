@@ -1,8 +1,9 @@
-%Write a confusion matrix test
-%Create test data
-% POSTCODE | INDEX | ACTUAL CLASS
+%{
+This script is used to test the accuracy of the model obtained in the
+modeltraining script. If the model obtains over a certain percentage of
+passes in the confusion matrix it is accepted as a sound model.
+%}
 
-% RUN NAIVE BAYES WITH TEST DATA, COMPARE OUTCOME AGAINST ACTUAL CLASS
 
 % Import all data needed and convert them to arrays to make them easier to
 % handle.

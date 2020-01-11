@@ -1,4 +1,8 @@
-clear;
+%{
+This script is used to prepare data on burglarys and on postcode wealth
+fopr use in the model training stage.
+%}
+
 % Load data
 housePrices = readtable('houseprices.xlsx');
 crimeRates = readtable('crimestats.xlsx');

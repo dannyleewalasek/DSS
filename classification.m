@@ -1,4 +1,8 @@
-%Naive bayes
+%{
+This script is used to classify new inputs into the system into one of the
+classes defined dureing the model stage.
+%}
+
 clear;
 %postcode,house price, contents, numofburglarys
 burglaryProbabilities = readtable('burglaryProbabilities');

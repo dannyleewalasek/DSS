@@ -1,7 +1,6 @@
 %{
-This script is used to create and train a model using data from the
-preperation stage and outputting a number of probability tables and
-clustering points.
+This script is used to prepare data on burglarys and on postcode wealth
+fopr use in the model training stage.
 %}
 
 trainingData = readtable('meanIndexPerPostcode');
