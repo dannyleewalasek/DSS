@@ -1,4 +1,8 @@
+% Prepare the data
 datapreperation;
+% Train the model using prepared data
 modeltraining;
-%accuracyTest
-%classifyNewData
+% Test the accuracy of the model
+AccuracyTest;
+% Use the model to classify a new input
+%classification;

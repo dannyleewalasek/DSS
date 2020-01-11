@@ -46,7 +46,7 @@ for a = 1:height(testdata)
                 if  b == 4
                   class = 4;
                 elseif b == 1
-                    currentProbability = indexProbabilities(b,2)
+                    currentProbability = indexProbabilities(b,2);
                 elseif testdata(a,:).index <= indexProbabilities(b,1)
                     for c = 2:5
                         if indexProbabilities(b,c) > currentProbability
@@ -64,5 +64,5 @@ for a = 1:height(testdata)
     end
 end
 
-bar(categorical({'BCorrect','BIncorrect','ICorrect','IIncorrect'}),[bcorrect, bincorrect,icorrect, iincorrect]);
+%bar(categorical({'BCorrect','BIncorrect','ICorrect','IIncorrect'}),[bcorrect, bincorrect,icorrect, iincorrect]);
 clear;
