@@ -4,10 +4,13 @@
 
 % RUN NAIVE BAYES WITH TEST DATA, COMPARE OUTCOME AGAINST ACTUAL CLASS
 
+% Import all data needed and convert them to arrays to make them easier to
+% handle.
 testdata = readtable('testdata.xlsx');
 burglaryProbabilities = readtable('burglaryProbabilities');
+burglaryProbabilities = table2array(burglaryProbabilities);
 indexProbabilities = readtable('indexProbabilities');
-
+indexProbabilities = table2array(indexProbabilities);
 % Accuracy test against burglary numbers
 bincorrect = 0;
 bcorrect = 0;
@@ -21,14 +24,15 @@ for a = 1:height(testdata)
             if  b == 4
                 class = 4;
             elseif b == 1
-                currentProbability = burglaryProbabilities(b,:).Class1;
-            elseif testdata(a,:).index <= burglaryProbabilities(b,:).Range
+                currentProbability = burglaryProbabilities(b,2);
+            elseif testdata(a,:).index <= burglaryProbabilities(b,1)
                 for c = 2:5
                     if burglaryProbabilities(b,c) > currentProbability
                         currentProbability = burglaryProbabilities(b,c);
                         class = c;
                     end
                 end
+                break;
             end
         end
              if class == testdata(a,:).ActualClass
@@ -36,13 +40,14 @@ for a = 1:height(testdata)
              else
                 bincorrect = bincorrect +1;
             end
-    else
+    end
+    if ~isnan(testdata(a,:).index)
             for b = 1:4
                 if  b == 4
                   class = 4;
                 elseif b == 1
-                    currentProbability = indexProbabilities(b,:).Class1;
-                elseif testdata(a,:).index <= indexProbabilities(b,:).Range
+                    currentProbability = indexProbabilities(b,2)
+                elseif testdata(a,:).index <= indexProbabilities(b,1)
                     for c = 2:5
                         if indexProbabilities(b,c) > currentProbability
                             currentProbability = indexProbabilities(b,c);
