@@ -7,6 +7,7 @@
 testdata = readtable('testdata.xlsx');
 burglaryProbabilities = readtable('burglaryProbabilities');
 
+% Accuracy test against burglary numbers
 incorrect = 0;
 correct = 0;
 class = 1;
@@ -27,5 +28,10 @@ for a = 1:height(testdata)
         end
     end
     if class == testdata(a,:).ActualClass
-        correct = correc
+        correct = correct +1;
+    else
+        incorrect = correct +1;
+    end
 end
+
+bar(categorical({'Small','Medium','Large','Extra Large'});,Y)
