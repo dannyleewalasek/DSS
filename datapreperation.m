@@ -9,8 +9,7 @@ consolidatedData = innerjoin(cleanHousePrices,burglaryOnly);
 % Data Cleaning
 
 % Remove Null values
-
-% Remove duplicates
+consolidatedData = rmmissing(consolidatedData);
 
 % Data Transformation
 consolidatedData.index = consolidatedData.HousePrice/100 + consolidatedData.ContentsValue;
@@ -22,8 +21,11 @@ meanIndexPerPostcode = varfun(@mean,consolidatedData,'InputVariables','index',..
        'GroupingVariables','PostCode');
 meanIndexPerPostcode.Properties.VariableNames = {'PostCode','BurglaryCount','Mean_Index'};
 meanIndexPerPostcode.PostCode = [];
+
+% Remove duplicates
+consolidatedData = unique(consolidatedData);
+
 disp(meanIndexPerPostcode);
 
 % Save output
 writetable(meanIndexPerPostcode);
-clear;
