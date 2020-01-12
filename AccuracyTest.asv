@@ -21,8 +21,8 @@ for c = 1:height(testdata)
     minDistance = 99999999999999999999999999;
     for d = 1:size(clusterPositions)
         if sqrt((clusterPositions{d,1} - testdata(c,:).Burglarys).^2 + (clusterPositions{d,2} - testdata(c,:).index).^2) < minDistance
-            testdata(c,:).class = d;
-            minDistance = sqrt((clusterPositions(d,1) - testdata(c,:).Burglarys).^2 + (clusterPositions(d,2) - testdata(c,:).index).^2);
+            testdata(c,:).ActualClass = d;
+            minDistance = sqrt((clusterPositions{d,1} - testdata(c,:).Burglarys).^2 + (clusterPositions{d,2} - testdata(c,:).index).^2);
         end
     end
 end
@@ -30,7 +30,6 @@ end
 
 % Now attempt to test each against the model using only either burg number
 % or index.
-
 
 
 % Accuracy test against burglary numbers
@@ -47,7 +46,7 @@ for a = 1:height(testdata)
                 class = 4;
             elseif b == 1
                 currentProbability = burglaryProbabilities(b,2);
-            elseif testdata(a,:).index <= burglaryProbabilities(b,1)
+            elseif testdata(a,:).Burglarys <= burglaryProbabilities(b,1)
                 for c = 2:5
                     if burglaryProbabilities(b,c) > currentProbability
                         currentProbability = burglaryProbabilities(b,c);
@@ -86,7 +85,4 @@ for a = 1:height(testdata)
     end
 end
 
-
-
-%bar(categorical({'BCorrect','BIncorrect','ICorrect','IIncorrect'}),[bcorrect, bincorrect,icorrect, iincorrect]);
-clear;
+bar(categorical({'BCorrect','BIncorrect','ICorrect','IIncorrect'}),[bcorrect, bincorrect,icorrect, iincorrect]);

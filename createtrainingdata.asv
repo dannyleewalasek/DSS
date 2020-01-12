@@ -1,0 +1,20 @@
+% THESE DATA CRFEASTION CLASSES WILL BE REMOVED BEFORE FINAL SUBMISSION
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+crimeStats = table("LS8_1PR", "Burglary");
+crimeStats.Properties.VariableNames = {'PostCode','CrimeType'};
+writetable(crimeStats);
+housePrices = table("LS8_1PR", "250000", "5000");
+housePrices.Properties.VariableNames = {'PostCode','HousePrice','ContentsValue'};
+writetable(housePrices);
+
+% These values need some randomness and some outliers
+for a = 1:100
+    crimeStats(a,:).PostCode = strcat("LS"+a+"1QE";
+    housePrices(a,:).PostCode = "LS"+a+"1QE";
+    % make some of these not burglary
+    crimeStats(a,:).CrimeType = "Burglary";
+    housePrices(a,:).HousePrice = a * 10000;
+    housePrices(a,:).ContentsValue = a * 10000;
+end

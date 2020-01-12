@@ -7,7 +7,8 @@ clear;
 
 % Import all data needed and convert them to arrays to make them easier to
 % handle.
-testdata = readtable('testdata.xlsx');
+createtestdata;
+testdata = readtable('testdata.txt');
 clusterPositions = readtable('c.txt');
 burglaryProbabilities = readtable('burglaryProbabilities');
 burglaryProbabilities = table2array(burglaryProbabilities);
@@ -27,11 +28,8 @@ for c = 1:height(testdata)
     end
 end
 
-
 % Now attempt to test each against the model using only either burg number
 % or index.
-
-
 
 % Accuracy test against burglary numbers
 bincorrect = 0;
@@ -40,6 +38,7 @@ iincorrect = 0;
 icorrect = 0;
 class = 1;
 currentProbability = 0;
+% !NEED TO STORE FOR EACH CLASS IF IT WAS A FALSE/TRUE POSITIVE OR NEGATIVE
 for a = 1:height(testdata)
     if ~isnan(testdata(a,:).Burglarys)
         for b = 1:4
@@ -57,6 +56,7 @@ for a = 1:height(testdata)
                 break;
             end
         end
+        % DO STORING OF FP ETC VALUES IN MATRIX HERE
              if class == testdata(a,:).ActualClass
                 bcorrect = bcorrect +1;
              else

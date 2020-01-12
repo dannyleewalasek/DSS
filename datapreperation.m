@@ -4,8 +4,8 @@ fopr use in the model training stage.
 %}
 clear;
 % Load data
-housePrices = readtable('houseprices.xlsx');
-crimeRates = readtable('crimestats.xlsx');
+housePrices = readtable('houseprices.txt');
+crimeRates = readtable('crimestats.txt');
 % Data Consolidation
 burglaryOnly = crimeRates(crimeRates.CrimeType == "Burglary",:);
 cleanHousePrices = housePrices(housePrices.HousePrice > 10000,:);

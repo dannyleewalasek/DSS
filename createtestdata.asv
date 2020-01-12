@@ -1,0 +1,3 @@
+testdata = table(PostCode,index,Burglarys', 'ActualClass');
+testdata.Properties.VariableNames = {'PostCode','index','Burglarys', 'ActualClass'};
+writetable(testdata);
