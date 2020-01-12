@@ -7,8 +7,7 @@ clear;
 
 % Import all data needed and convert them to arrays to make them easier to
 % handle.
-createtestdata;
-testdata = readtable('testdata.txt');
+testdata = readtable('testData.txt');
 clusterPositions = readtable('c.txt');
 burglaryProbabilities = readtable('burglaryProbabilities');
 burglaryProbabilities = table2array(burglaryProbabilities);

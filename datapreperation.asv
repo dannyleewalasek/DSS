@@ -10,8 +10,6 @@ crimeRates = readtable('crimestats.txt');
 burglaryOnly = crimeRates(crimeRates.CrimeType == "Burglary",:);
 cleanHousePrices = housePrices(housePrices.HousePrice > 10000,:);
 consolidatedData = innerjoin(cleanHousePrices,burglaryOnly);
-consolidatedData{:,5} = 0;
-consolidatedData.Properties.VariableNames = {'PostCode','HousePrice','ContentsValue','CrimeType','Count'};
 % Data Cleaning
 
 % Remove Null values
@@ -23,20 +21,23 @@ consolidatedData.index = consolidatedData.HousePrice/100 + consolidatedData.Cont
 % Data Reduction
 consolidatedData.HousePrice = [];
 consolidatedData.ContentsValue = [];
-disp(height(consolidatedData(consolidatedData.PostCode == "LS8961QE",:)));
-disp(consolidatedData);
 % Remove duplicates
+disp(consolidatedData.PostCode == consolidatedData{1,1});
+for a = 1:height(consolidatedData)
+    consolidatedData{a,4} = height(cell2mat(consolidatedData).PostCode == cell2mat(consolidatedData{a,1});
+end
+disp(consolidatedData);
+consolidatedData = unique(consolidatedData);
+disp(consolidatedData);
 
 
-%consolidatedData = unique(consolidatedData);
 meanIndexPerPostcode = varfun(@mean,consolidatedData,'InputVariables','index',...
        'GroupingVariables','PostCode');
-   disp(meanIndexPerPostcode);
 meanIndexPerPostcode.Properties.VariableNames = {'PostCode','BurglaryCount','Mean_Index'};
 meanIndexPerPostcode.PostCode = [];
 
 
-
+disp(meanIndexPerPostcode);
 
 % Save output
 writetable(meanIndexPerPostcode);

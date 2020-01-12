@@ -120,7 +120,6 @@ for z = 1:height(trainingData)
     hold on;
 end
 
-
 % Plot of Kmeans points
 plot(C(1,1),C(1,2),'b*','MarkerSize',5);
     hold on;
