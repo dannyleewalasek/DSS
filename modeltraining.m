@@ -3,7 +3,7 @@ This script is used to create and train a model using data from the
 preperation stage and outputting a number of probability tables and
 clustering points.
 %}
-
+clear;
 trainingData = readtable('meanIndexPerPostcode');
 trainingData.class(:,:) = zeros();
 
@@ -13,10 +13,13 @@ hold on;
 % Run Kmeans
 [idx,C]  = kmeans(table2array(trainingData),4);
 
-%Plot of Kmeans points
+% Plot of Kmeans points
 plot(C(:,1),C(:,2),'b*','MarkerSize',5);
 
-%Determine class of each point.
+% Save cluster positions
+writematrix(C);
+
+%Determine class of each point using euclidean formula.
 for c = 1:height(trainingData)
     minDistance = 99999999999999999999999999;
     for d = 1:size(C)
@@ -45,6 +48,8 @@ for f = 1:height(trainingData)
         end
     end
 end
+
+writetable(trainingData);
 
 % Calculating probabilities
 for h = 1:4
@@ -108,7 +113,6 @@ disp(burglaryProbabilities);
 disp("----------- Index probabilities ----------- ");
 disp(indexProbabilities);
 
-clear;
 
 %FREQUENCY TABLE CREATION TO BE USED WITH NAIVE BAYES 
 %Save training data with class identification

@@ -3,15 +3,36 @@ This script is used to test the accuracy of the model obtained in the
 modeltraining script. If the model obtains over a certain percentage of
 passes in the confusion matrix it is accepted as a sound model.
 %}
-
+clear;
 
 % Import all data needed and convert them to arrays to make them easier to
 % handle.
 testdata = readtable('testdata.xlsx');
+clusterPositions = readtable('c.txt');
 burglaryProbabilities = readtable('burglaryProbabilities');
 burglaryProbabilities = table2array(burglaryProbabilities);
 indexProbabilities = readtable('indexProbabilities');
 indexProbabilities = table2array(indexProbabilities);
+
+% Check each item in the test data to see which class it belongs to by
+% checking them against the K cluster positions
+%Determine class of each point using euclidean formula.
+for c = 1:height(testdata)
+    minDistance = 99999999999999999999999999;
+    for d = 1:size(clusterPositions)
+        if sqrt((clusterPositions{d,1} - testdata(c,:).Burglarys).^2 + (clusterPositions{d,2} - testdata(c,:).index).^2) < minDistance
+            testdata(c,:).ActualClass = d;
+            minDistance = sqrt((clusterPositions{d,1} - testdata(c,:).Burglarys).^2 + (clusterPositions{d,2} - testdata(c,:).index).^2);
+        end
+    end
+end
+
+
+% Now attempt to test each against the model using only either burg number
+% or index.
+
+
+
 % Accuracy test against burglary numbers
 bincorrect = 0;
 bcorrect = 0;
@@ -65,5 +86,4 @@ for a = 1:height(testdata)
     end
 end
 
-%bar(categorical({'BCorrect','BIncorrect','ICorrect','IIncorrect'}),[bcorrect, bincorrect,icorrect, iincorrect]);
-clear;
+bar(categorical({'BCorrect','BIncorrect','ICorrect','IIncorrect'}),[bcorrect, bincorrect,icorrect, iincorrect]);
