@@ -8,6 +8,7 @@ housePrices = readtable('houseprices.txt');
 crimeRates = readtable('crimestats.txt');
 % Data Consolidation
 burglaryOnly = crimeRates(crimeRates.CrimeType == "Burglary",:);
+
 %count number of burglarys for each post code
 burglaryOnly{:,3} = 0;
 a = 1;
@@ -46,16 +47,12 @@ consolidatedData.ContentsValue = [];
 % Remove duplicates
 
 consolidatedData = unique(consolidatedData);
+consolidatedData(consolidatedData.Count == 0, :) = [];
+consolidatedData.CrimeType = [];
+consolidatedData.PostCode = [];
 disp(consolidatedData);
 
-%disp(consolidatedData);
-%consolidatedData = unique(consolidatedData);
-meanIndexPerPostcode = varfun(@mean,consolidatedData,'InputVariables','index',...
-       'GroupingVariables','PostCode');
-meanIndexPerPostcode.Properties.VariableNames = {'PostCode','BurglaryCount','Mean_Index'};
-meanIndexPerPostcode.PostCode = [];
-meanIndexPerPostcode.BurglaryCount = meanIndexPerPostcode.BurglaryCount/2;
-disp(meanIndexPerPostcode);
+meanIndexPerPostcode = consolidatedData;
 
 % Save output
 writetable(meanIndexPerPostcode);

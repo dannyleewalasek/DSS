@@ -17,16 +17,16 @@ writematrix(C);
 for c = 1:height(trainingData)
     minDistance = 99999999999999999999999999;
     for d = 1:size(C)
-        if sqrt((C(d,1) - trainingData(c,:).BurglaryCount).^2 + (C(d,2) - trainingData(c,:).Mean_Index).^2) < minDistance
+        if sqrt((C(d,1) - trainingData(c,:).Count).^2 + (C(d,2) - trainingData(c,:).index).^2) < minDistance
             trainingData(c,:).class = d;
-            minDistance = sqrt((C(d,1) - trainingData(c,:).BurglaryCount).^2 + (C(d,2) - trainingData(c,:).Mean_Index).^2);
+            minDistance = sqrt((C(d,1) - trainingData(c,:).Count).^2 + (C(d,2) - trainingData(c,:).index).^2);
         end
     end
 end
 
 % -----------------Burglary class probabilities -------------------
 % Set ranges in new array to be used for probabilities
-maxBurglarys = max(trainingData.BurglaryCount);
+maxBurglarys = max(trainingData.Count);
 burg = [0,0,0,0,0,0;];
 for e = 1:4
     burg(e,1) = maxBurglarys/4 * e;
@@ -35,7 +35,7 @@ end
 % Counting number of classes in each range
 for f = 1:height(trainingData)
     for g = 1:4
-        if (trainingData(f,:).BurglaryCount <= burg(g,1))
+        if (trainingData(f,:).Count <= burg(g,1))
             burg(g,trainingData(f,:).class +1 ) = burg(g,trainingData(f,:).class + 1) + 1;
             burg(g,6) = burg(g,6)+1;
             break;
@@ -54,7 +54,7 @@ end
 
 % -----------------Wealth index class probabilities -------------------
 % Set ranges in new array to be used for probabilities
-maxIndex = max(trainingData.Mean_Index);
+maxIndex = max(trainingData.index);
 index = [0,0,0,0,0,0;];
 for j = 1:4
     index(j,1) = maxIndex/4 * j;
@@ -63,7 +63,7 @@ end
 % Counting number of classes in each range
 for k = 1:height(trainingData)
     for l = 1:4
-        if (trainingData(k,:).Mean_Index <= index(l,1))
+        if (trainingData(k,:).index <= index(l,1))
             index(l,trainingData(k,:).class +1 ) = index(l,trainingData(k,:).class + 1) + 1;
             index(l,6) = index(l,6)+1;
             break;
@@ -109,13 +109,13 @@ disp(indexProbabilities);
 
 for z = 1:height(trainingData)
     if trainingData(z,:).class == 1
-        plot(trainingData(z,:).BurglaryCount, trainingData(z,:).Mean_Index,'bo','MarkerSize',5);
+        plot(trainingData(z,:).Count, trainingData(z,:).index,'bo','MarkerSize',5);
     elseif trainingData(z,:).class == 2
-        plot(trainingData(z,:).BurglaryCount, trainingData(z,:).Mean_Index,'go','MarkerSize',5);
+        plot(trainingData(z,:).Count, trainingData(z,:).index,'go','MarkerSize',5);
     elseif trainingData(z,:).class == 3
-        plot(trainingData(z,:).BurglaryCount, trainingData(z,:).Mean_Index,'ro','MarkerSize',5);
+        plot(trainingData(z,:).Count, trainingData(z,:).index,'ro','MarkerSize',5);
     elseif trainingData(z,:).class == 3
-        plot(trainingData(z,:).BurglaryCount, trainingData(z,:).Mean_Index,'co','MarkerSize',5);
+        plot(trainingData(z,:).Count, trainingData(z,:).index,'co','MarkerSize',5);
     end
     hold on;
 end
