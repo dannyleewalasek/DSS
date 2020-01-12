@@ -8,7 +8,7 @@ trainingData = readtable('meanIndexPerPostcode');
 trainingData.class(:,:) = zeros();
 
 % Run Kmeans
-[idx,C]  = kmeans(table2array(trainingData),4);
+[idx,C]  = kmeans(table2array(trainingData),3);
 
 % Save cluster positions
 writematrix(C);
@@ -29,12 +29,12 @@ end
 maxBurglarys = max(trainingData.Count);
 burg = [0,0,0,0,0,0;];
 for e = 1:4
-    burg(e,1) = maxBurglarys/4 * e;
+    burg(e,1) = maxBurglarys/3 * e;
 end
 
 % Counting number of classes in each range
 for f = 1:height(trainingData)
-    for g = 1:4
+    for g = 1:3
         if (trainingData(f,:).Count <= burg(g,1))
             burg(g,trainingData(f,:).class +1 ) = burg(g,trainingData(f,:).class + 1) + 1;
             burg(g,6) = burg(g,6)+1;
@@ -46,7 +46,7 @@ end
 writetable(trainingData);
 
 % Calculating probabilities
-for h = 1:4
+for h = 1:3
     for i = 2:5
         burg(h,i) = burg(h,i)/ burg(h,6);
     end
@@ -56,13 +56,13 @@ end
 % Set ranges in new array to be used for probabilities
 maxIndex = max(trainingData.index);
 index = [0,0,0,0,0,0;];
-for j = 1:4
-    index(j,1) = maxIndex/4 * j;
+for j = 1:3
+    index(j,1) = maxIndex/3 * j;
 end
 
 % Counting number of classes in each range
 for k = 1:height(trainingData)
-    for l = 1:4
+    for l = 1:3
         if (trainingData(k,:).index <= index(l,1))
             index(l,trainingData(k,:).class +1 ) = index(l,trainingData(k,:).class + 1) + 1;
             index(l,6) = index(l,6)+1;
@@ -72,7 +72,7 @@ for k = 1:height(trainingData)
 end
 
 % Calculating probabilities
-for l = 1:4
+for l = 1:3
     for m = 2:5
         index(l,m) = index(l,m)/ index(l,6);
     end
@@ -80,7 +80,7 @@ end
 
 % Replace NAN's with 0.25, this is because they only appear in a row with
 % all NaN's
-for n = 1:4
+for n = 1:3
     for o = 2:6
         if isnan(burg(n,o))
             burg(n,o) = 0.25;
@@ -114,8 +114,6 @@ for z = 1:height(trainingData)
         plot(trainingData(z,:).Count, trainingData(z,:).index,'go','MarkerSize',5);
     elseif trainingData(z,:).class == 3
         plot(trainingData(z,:).Count, trainingData(z,:).index,'ro','MarkerSize',5);
-    elseif trainingData(z,:).class == 3
-        plot(trainingData(z,:).Count, trainingData(z,:).index,'co','MarkerSize',5);
     end
     hold on;
 end
@@ -127,8 +125,7 @@ plot(C(2,1),C(2,2),'g*','MarkerSize',5);
     hold on;
 plot(C(3,1),C(3,2),'r*','MarkerSize',5);
     hold on;
-plot(C(4,1),C(4,2),'c*','MarkerSize',5);
-    hold on;
+
 %FREQUENCY TABLE CREATION TO BE USED WITH NAIVE BAYES 
 %Save training data with class identification
 %Save frequency table

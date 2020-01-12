@@ -1,4 +1,5 @@
 %{
+
 This script is used to test the accuracy of the model obtained in the
 modeltraining script. If the model obtains over a certain percentage of
 passes in the confusion matrix it is accepted as a sound model.
@@ -25,6 +26,11 @@ for c = 1:height(testdata)
             minDistance = sqrt((clusterPositions{d,1} - testdata(c,:).Burglarys).^2 + (clusterPositions{d,2} - testdata(c,:).index).^2);
         end
     end
+end
+
+for a = 1:height(testdata)
+        plot(testdata(a,:).Burglarys, testdata(a,:).index,'yo','MarkerSize',5);
+        hold on;
 end
 
 % Now attempt to test each against the model using only either burg number
