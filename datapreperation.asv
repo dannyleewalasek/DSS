@@ -8,12 +8,33 @@ housePrices = readtable('houseprices.txt');
 crimeRates = readtable('crimestats.txt');
 % Data Consolidation
 burglaryOnly = crimeRates(crimeRates.CrimeType == "Burglary",:);
+%count number of burglarys for each post code
+burglaryOnly{:,3} = 0;
+a = 1;
+while a < height(burglaryOnly)
+    count = 0;
+    for b = 1:height(burglaryOnly)
+        if isequal(burglaryOnly(a,1),burglaryOnly(b,1))
+            count = count + 1;
+            disp("testing: " + a + "with: " + b + " " +count);
+            burglaryOnly{a,3} = count;
+        end
+    end
+    a = a + count+1;
+    count = 0;
+end
+
+burglaryOnly = unique(burglaryOnly);
+
 cleanHousePrices = housePrices(housePrices.HousePrice > 10000,:);
+cleanHousePrices = unique(cleanHousePrices);
 consolidatedData = innerjoin(cleanHousePrices,burglaryOnly);
+disp(consolidatedData);
+consolidatedData.Properties.VariableNames = {'PostCode','HousePrice','ContentsValue','CrimeType','Count'};
 % Data Cleaning
 
 % Remove Null values
-consolidatedData = rmmissing(consolidatedData);
+%consolidatedData = rmmissing(consolidatedData);
 
 % Data Transformation
 consolidatedData.index = consolidatedData.HousePrice/100 + consolidatedData.ContentsValue;
@@ -21,23 +42,20 @@ consolidatedData.index = consolidatedData.HousePrice/100 + consolidatedData.Cont
 % Data Reduction
 consolidatedData.HousePrice = [];
 consolidatedData.ContentsValue = [];
+%disp(height(consolidatedData(consolidatedData.PostCode == "LS8961QE",:)));
 % Remove duplicates
-disp(consolidatedData.PostCode == consolidatedData{1,1});
-for a = 1:height(consolidatedData)
-    consolidatedData{a,4} = height(cell2mat(consolidatedData).PostCode == cell2mat(consolidatedData{a,1});
-end
-disp(consolidatedData);
+
 consolidatedData = unique(consolidatedData);
 disp(consolidatedData);
 
-
+%disp(consolidatedData);
+%consolidatedData = unique(consolidatedData);
 meanIndexPerPostcode = varfun(@mean,consolidatedData,'InputVariables','index',...
        'GroupingVariables','PostCode');
 meanIndexPerPostcode.Properties.VariableNames = {'PostCode','BurglaryCount','Mean_Index'};
 meanIndexPerPostcode.PostCode = [];
 
-
-disp(meanIndexPerPostcode);
+disp(,
 
 % Save output
 writetable(meanIndexPerPostcode);
