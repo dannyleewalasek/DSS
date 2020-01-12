@@ -18,25 +18,46 @@ class = 0;
 currentProbability = 0;
     % Check the input has a number of burglarys
     disp(input(1,:).BurglaryCount);
-    if ~cellfun(@isnan,(input(1,:).BurglaryCount))
+    if ~isnan(input(1,:).BurglaryCount)
         for b = 1:4
             if  b == 4
                 class = 4;
             elseif b == 1
-                currentProbability = burglaryProbabilities(b,:).Class1;
-                class = 1;
-            elseif input(1,:).ValueIndex <= burglaryProbabilities(b,:).Range
+                currentProbability = burglaryProbabilities(b,2);
+            elseif input(1,:).BurglaryCount <= burglaryProbabilities(b,1)
                 for c = 2:5
                     if burglaryProbabilities(b,c) > currentProbability
                         currentProbability = burglaryProbabilities(b,c);
                         class = c;
                     end
                 end
+                break;
             end
         end
-             if class == testdata(a,:).ActualClass
+             if class == input(1,:).ActualClass
                 bcorrect = bcorrect +1;
              else
                 bincorrect = bincorrect +1;
-             end
+            end
+    end
+    if ~isnan(input(1,:).index)
+            for b = 1:4
+                if  b == 4
+                  class = 4;
+                elseif b == 1
+                    currentProbability = indexProbabilities(b,2);
+                elseif input(1,:).index <= indexProbabilities(b,1)
+                    for c = 2:5
+                        if indexProbabilities(b,c) > currentProbability
+                            currentProbability = indexProbabilities(b,c);
+                            class = c;
+                        end
+                    end
+                end
+            end
+            if class == input(1,:).ActualClass
+                icorrect = icorrect +1;
+            else
+                iincorrect = iincorrect +1;
+            end
     end

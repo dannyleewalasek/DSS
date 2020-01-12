@@ -47,7 +47,7 @@ for a = 1:height(testdata)
                 class = 4;
             elseif b == 1
                 currentProbability = burglaryProbabilities(b,2);
-            elseif testdata(a,:).index <= burglaryProbabilities(b,1)
+            elseif testdata(a,:).Burglarys <= burglaryProbabilities(b,1)
                 for c = 2:5
                     if burglaryProbabilities(b,c) > currentProbability
                         currentProbability = burglaryProbabilities(b,c);
