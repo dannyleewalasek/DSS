@@ -25,7 +25,7 @@ while a < height(testdata)
     count = 0;
 end
 
-testdata = unique(testdata);
+testdata = uniq(testdata);
 
 burglaryProbabilities = readtable('burglaryProbabilities');
 burglaryProbabilities = table2array(burglaryProbabilities);

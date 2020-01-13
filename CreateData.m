@@ -19,9 +19,7 @@ while a < 900
         crimeStats(b,:).CrimeType = "Burglary";
         housePrices(b,:).HousePrice = a * 1000;
         housePrices(b,:).ContentsValue = a + 1000 ;
-        testData{b,2} = ((a * 1000)/100) + ( a + 1000);
-        testData{b,3} = c - a;
-        testData{b,4} = 0;
+        testData(b,:).index = (a * 1000)/100 + ( 1+1000);
     end
     a = c;
 end
