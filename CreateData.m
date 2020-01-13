@@ -25,5 +25,4 @@ while a < 900
 end
 writetable(housePrices);
 writetable(crimeStats);
-testData = unique(testData);
 writetable(testData);

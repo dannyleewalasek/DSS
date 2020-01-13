@@ -27,8 +27,8 @@ end
 % -----------------Burglary class probabilities -------------------
 % Set ranges in new array to be used for probabilities
 maxBurglarys = max(trainingData.Count);
-burg = [0,0,0,0,0,0;];
-for e = 1:4
+burg = [0,0,0,0,0;];
+for e = 1:3
     burg(e,1) = maxBurglarys/3 * e;
 end
 
@@ -37,7 +37,7 @@ for f = 1:height(trainingData)
     for g = 1:3
         if (trainingData(f,:).Count <= burg(g,1))
             burg(g,trainingData(f,:).class +1 ) = burg(g,trainingData(f,:).class + 1) + 1;
-            burg(g,6) = burg(g,6)+1;
+            burg(g,5) = burg(g,5)+1;
             break;
         end
     end
@@ -47,15 +47,15 @@ writetable(trainingData);
 
 % Calculating probabilities
 for h = 1:3
-    for i = 2:5
-        burg(h,i) = burg(h,i)/ burg(h,6);
+    for i = 2:4
+        burg(h,i) = burg(h,i)/ burg(h,5);
     end
 end
 
 % -----------------Wealth index class probabilities -------------------
 % Set ranges in new array to be used for probabilities
 maxIndex = max(trainingData.index);
-index = [0,0,0,0,0,0;];
+index = [0,0,0,0,0;];
 for j = 1:3
     index(j,1) = maxIndex/3 * j;
 end
@@ -65,7 +65,7 @@ for k = 1:height(trainingData)
     for l = 1:3
         if (trainingData(k,:).index <= index(l,1))
             index(l,trainingData(k,:).class +1 ) = index(l,trainingData(k,:).class + 1) + 1;
-            index(l,6) = index(l,6)+1;
+            index(l,5) = index(l,5)+1;
             break;
         end
     end
@@ -73,29 +73,29 @@ end
 
 % Calculating probabilities
 for l = 1:3
-    for m = 2:5
-        index(l,m) = index(l,m)/ index(l,6);
+    for m = 2:4
+        index(l,m) = index(l,m)/ index(l,5);
     end
 end
 
 % Replace NAN's with 0.25, this is because they only appear in a row with
 % all NaN's
 for n = 1:3
-    for o = 2:6
+    for o = 2:4
         if isnan(burg(n,o))
-            burg(n,o) = 0.25;
+            burg(n,o) = 0.333;
         end
         if isnan(index(n,o))
-            index(n,o) = 0.25;
+            index(n,o) = 0.333;
         end
     end
 end
 
 % Convert array to table and add headings
 burglaryProbabilities = array2table(burg,...
-    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'Class 4' 'total'});
+    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'total'});
 indexProbabilities = array2table(index,...
-    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'Class 4' 'total'});
+    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'total'});
 
 % Save tables to file which make up our model
 writetable(burglaryProbabilities);

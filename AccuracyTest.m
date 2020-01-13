@@ -12,6 +12,7 @@ testdata = readtable('testData.txt');
 clusterPositions = readtable('c.txt');
 burglaryOnly{:,3} = 0;
 a = 1;
+%count number of burglarys per postcode
 while a < height(testdata)
     count = 0;
     for b = 1:height(testdata)
@@ -26,6 +27,8 @@ while a < height(testdata)
 end
 
 testdata = unique(testdata);
+
+testdata(testdata.Burglarys == 0, :) = [];
 
 burglaryProbabilities = readtable('burglaryProbabilities');
 burglaryProbabilities = table2array(burglaryProbabilities);
@@ -54,58 +57,49 @@ end
 % or index.
 
 % Accuracy test against burglary numbers
-bincorrect = 0;
-bcorrect = 0;
-iincorrect = 0;
-icorrect = 0;
+incorrect = 0;
+correct = 0;
 class = 1;
 currentProbability = 0;
 % !NEED TO STORE FOR EACH CLASS IF IT WAS A FALSE/TRUE POSITIVE OR NEGATIVE
 for a = 1:height(testdata)
+    pclass = [0,0,0,0];
     if ~isnan(testdata(a,:).Burglarys)
-        for b = 1:4
-            if  b == 4
-                class = 4;
-            elseif b == 1
-                currentProbability = burglaryProbabilities(b,2);
-            elseif testdata(a,:).Burglarys <= burglaryProbabilities(b,1)
-                for c = 2:5
-                    if burglaryProbabilities(b,c) > currentProbability
-                        currentProbability = burglaryProbabilities(b,c);
-                        class = c;
-                    end
+        for b = 1:3
+            if testdata(a,:).Burglarys <= burglaryProbabilities(b,1)
+                for c = 2:4
+                        pclass(c-1) = burglaryProbabilities(b,c);
                 end
                 break;
             end
         end
-        % DO STORING OF FP ETC VALUES IN MATRIX HERE
-             if class == testdata(a,:).ActualClass
-                bcorrect = bcorrect +1;
-             else
-                bincorrect = bincorrect +1;
-            end
     end
+    class = 0;
     if ~isnan(testdata(a,:).index)
-            for b = 1:4
-                if  b == 4
-                  class = 4;
-                elseif b == 1
-                    currentProbability = indexProbabilities(b,2);
-                elseif testdata(a,:).index <= indexProbabilities(b,1)
-                    for c = 2:5
-                        if indexProbabilities(b,c) > currentProbability
-                            currentProbability = indexProbabilities(b,c);
-                            class = c;
-                        end
-                    end
+       for b = 1:3
+            if testdata(a,:).index <= indexProbabilities(b,1)
+                for c = 2:4
+                        pclass(c-1) = pclass(c-1) + indexProbabilities(b,c);
                 end
+                break;
             end
-            if class == testdata(a,:).ActualClass
-                icorrect = icorrect +1;
-            else
-                iincorrect = iincorrect +1;
-            end
+        end
+    end
+    highest = 1;
+    disp(".....................................");
+    disp(pclass);
+    disp("actual" + testdata(a,:).ActualClass);
+    for d = 1:3
+        if pclass(1,d) > pclass(1,highest)
+            highest = d;
+        end
+    end
+        disp("d: " + d);
+    if testdata(a,:).ActualClass == highest
+        correct = correct + 1;
+    else
+        incorrect = incorrect + 1;
     end
 end
 
-bar(categorical({'BCorrect','BIncorrect','ICorrect','IIncorrect'}),[bcorrect, bincorrect,icorrect, iincorrect]);
+%bar(categorical({'BCorrect','BIncorrect','ICorrect','IIncorrect'}),[bcorrect, bincorrect,icorrect, iincorrect]);
