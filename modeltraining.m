@@ -78,9 +78,9 @@ end
 
 % Convert array to table and add headings
 burglaryProbabilities = array2table(burg,...
-    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'total'});
+    'VariableNames',{'Range' 'Class1' 'Class2' 'Class3' 'total'});
 indexProbabilities = array2table(index,...
-    'VariableNames',{'Range' 'Class 1' 'Class 2' 'Class 3' 'total'});
+    'VariableNames',{'Range' 'Class1' 'Class2' 'Class3' 'total'});
 
 % Save tables to file which make up our model
 writetable(burglaryProbabilities);
@@ -96,7 +96,6 @@ disp(indexProbabilities);
 for z = 1:height(trainingData)
     if trainingData(z,:).class == 1
         plot(trainingData(z,:).Count, trainingData(z,:).index,'bo','MarkerSize',5);
-            legend('class 1');
     elseif trainingData(z,:).class == 2
         plot(trainingData(z,:).Count, trainingData(z,:).index,'go','MarkerSize',5);
     elseif trainingData(z,:).class == 3

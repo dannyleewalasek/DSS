@@ -4,60 +4,36 @@ classes defined dureing the model stage.
 %}
 
 clear;
-%postcode,house price, contents, numofburglarys
-burglaryProbabilities = readtable('burglaryProbabilities');
-inputRow = {'LS7 WEP',1000,5};
+inputRow = {'LS7 WEP',3816,256};
 input = array2table(inputRow,...
-    'VariableNames',{'PostCode' 'ValueIndex' 'BurglaryCount'});
+    'VariableNames',{'PostCode' 'ValueIndex' 'Burglarys'});
+burglaryProbabilities = readtable('burglaryProbabilities');
+burglaryProbabilities = table2array(burglaryProbabilities);
+indexProbabilities = readtable('indexProbabilities');
+indexProbabilities = table2array(indexProbabilities);
 
-% %chance of being in class 1:
-
-% THIS IS BROKEN !!!!!!!!!!!!!!!!!!!!!! FROM NOW ON
-
-class = 0;
-currentProbability = 0;
-    % Check the input has a number of burglarys
-    disp(input(1,:).BurglaryCount);
-    if ~isnan(input(1,:).BurglaryCount)
-        for b = 1:4
-            if  b == 4
-                class = 4;
-            elseif b == 1
-                currentProbability = burglaryProbabilities(b,2);
-            elseif input(1,:).BurglaryCount <= burglaryProbabilities(b,1)
-                for c = 2:5
-                    if burglaryProbabilities(b,c) > currentProbability
-                        currentProbability = burglaryProbabilities(b,c);
-                        class = c;
-                    end
-                end
-                break;
-            end
+highest = 1;
+pclass = [0,0,0,0];
+for b = 1:3
+	if inputRow{1,3} <= burglaryProbabilities(b,1)
+        for c = 2:4
+            pclass(c-1) = burglaryProbabilities(b,c);
         end
-             if class == input(1,:).ActualClass
-                bcorrect = bcorrect +1;
-             else
-                bincorrect = bincorrect +1;
-            end
-    end
-    if ~isnan(input(1,:).index)
-            for b = 1:4
-                if  b == 4
-                  class = 4;
-                elseif b == 1
-                    currentProbability = indexProbabilities(b,2);
-                elseif input(1,:).index <= indexProbabilities(b,1)
-                    for c = 2:5
-                        if indexProbabilities(b,c) > currentProbability
-                            currentProbability = indexProbabilities(b,c);
-                            class = c;
-                        end
-                    end
-                end
-            end
-            if class == input(1,:).ActualClass
-                icorrect = icorrect +1;
-            else
-                iincorrect = iincorrect +1;
-            end
-    end
+        break;
+	end
+end
+for b = 1:3
+	if inputRow{1,2} <= indexProbabilities(b,1)
+        for c = 2:4
+            pclass(c-1) = pclass(c-1) + indexProbabilities(b,c);
+        end
+	break;
+	end
+end
+for d = 1:3
+	if pclass(1,d) > pclass(1,highest)
+        highest = d;
+	end
+end
+    
+disp("this object was identified as class: " + highest);
