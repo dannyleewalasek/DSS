@@ -24,8 +24,7 @@ for c = 1:height(trainingData)
     end
 end
 
-% -----------------Probability calculation -------------------
-
+% -----------------Burglary class probabilities -------------------
 % Set ranges in new array to be used for probabilities
 maxIndex = max(trainingData.index);
 maxBurglarys = max(trainingData.Count);
@@ -44,26 +43,46 @@ for f = 1:height(trainingData)
             burg(g,5) = burg(g,5)+1;
             break;
         end
-        if (trainingData(f,:).index <= index(g,1))
-            index(l,trainingData(f,:).class +1 ) = index(l,trainingData(f,:).class + 1) + 1;
-            index(f,5) = index(f,5)+1;
+                if (trainingData(k,:).index <= index(l,1))
+            index(l,trainingData(k,:).class +1 ) = index(l,trainingData(k,:).class + 1) + 1;
+            index(l,5) = index(l,5)+1;
             break;
         end
     end
 end
 
-% Save the training data
 writetable(trainingData);
 
 % Calculating probabilities
 for h = 1:3
     for i = 2:4
         burg(h,i) = burg(h,i)/ burg(h,5);
-        index(h,i) = index(h,i)/ index(h,5);
+        index(h,i) = index(h,i)/ index(l,5);
     end
 end
 
-% Replace NAN's with 0.3's, this is because they only appear in a row with
+% -----------------Wealth index class probabilities -------------------
+% Set ranges in new array to be used for probabilities
+
+% Counting number of classes in each range
+for k = 1:height(trainingData)
+    for l = 1:3
+        if (trainingData(k,:).index <= index(l,1))
+            index(l,trainingData(k,:).class +1 ) = index(l,trainingData(k,:).class + 1) + 1;
+            index(l,5) = index(l,5)+1;
+            break;
+        end
+    end
+end
+
+% Calculating probabilities
+for l = 1:3
+    for m = 2:4
+        index(l,m) = index(l,m)/ index(l,5);
+    end
+end
+
+% Replace NAN's with 0.25, this is because they only appear in a row with
 % all NaN's
 for n = 1:3
     for o = 2:4

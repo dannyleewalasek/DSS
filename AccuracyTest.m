@@ -60,6 +60,7 @@ class = 1;
 currentProbability = 0;
 % !NEED TO STORE FOR EACH CLASS IF IT WAS A FALSE/TRUE POSITIVE OR NEGATIVE
 for a = 1:height(testdata)
+    highest = 1;
     pclass = [0,0,0,0];
     if ~isnan(testdata(a,:).Burglarys)
         for b = 1:3

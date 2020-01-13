@@ -1,12 +1,12 @@
-% THESE DATA CRFEASTION CLASSES WILL BE REMOVED BEFORE FINAL SUBMISSION
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%{
+This script is used to generate training and testing data.
+%}
 testData = table("LS8_1PR", "1000", 10, 0);
 testData.Properties.VariableNames = {'PostCode','index','Burglarys','ActualClass'};
 crimeStats = table("LS8_1PR", "Burglary");
 crimeStats.Properties.VariableNames = {'PostCode','CrimeType'};
 housePrices = table("LS8_1PR", "250000", "5000");
 housePrices.Properties.VariableNames = {'PostCode','HousePrice','ContentsValue'};
-% These values need some randomness and some outliers
 a = 2;
 while a < 900
     c = a * 2; %a +  randi(round(50-(a/20))) + 1;
