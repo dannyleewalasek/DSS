@@ -9,8 +9,18 @@ clear;
 % handle.
 testdata = readtable('testData.txt');
 clusterPositions = readtable('c.txt');
+burglaryProbabilities = readtable('burglaryProbabilities');
+burglaryProbabilities = table2array(burglaryProbabilities);
+indexProbabilities = readtable('indexProbabilities');
+indexProbabilities = table2array(indexProbabilities);
 burglaryOnly{:,3} = 0;
 a = 1;
+
+% Create confusion matrix TP | FP
+%                         FN | TN
+confusionMatrix = [0,0;
+                    0,0];
+
 %count number of burglarys per postcode
 while a < height(testdata)
     count = 0;
@@ -26,17 +36,10 @@ while a < height(testdata)
 end
 
 testdata = unique(testdata);
-
 testdata(testdata.Burglarys == 0, :) = [];
 
-burglaryProbabilities = readtable('burglaryProbabilities');
-burglaryProbabilities = table2array(burglaryProbabilities);
-indexProbabilities = readtable('indexProbabilities');
-indexProbabilities = table2array(indexProbabilities);
-
 % Check each item in the test data to see which class it belongs to by
-% checking them against the K cluster positions
-%Determine class of each point using euclidean formula.
+% checking them against the K cluster positions using euclidean distance
 for c = 1:height(testdata)
     minDistance = 99999999999999999999999999;
     for d = 1:size(clusterPositions)

@@ -92,9 +92,11 @@ disp(burglaryProbabilities);
 disp("----------- Index probabilities ----------- ");
 disp(indexProbabilities);
 
+% Plot each data point colour coded by class
 for z = 1:height(trainingData)
     if trainingData(z,:).class == 1
         plot(trainingData(z,:).Count, trainingData(z,:).index,'bo','MarkerSize',5);
+            legend('class 1');
     elseif trainingData(z,:).class == 2
         plot(trainingData(z,:).Count, trainingData(z,:).index,'go','MarkerSize',5);
     elseif trainingData(z,:).class == 3
@@ -110,8 +112,3 @@ plot(C(2,1),C(2,2),'g*','MarkerSize',5);
     hold on;
 plot(C(3,1),C(3,2),'r*','MarkerSize',5);
     hold on;
-
-%FREQUENCY TABLE CREATION TO BE USED WITH NAIVE BAYES 
-%Save training data with class identification
-%Save frequency table
-%These make the model.
