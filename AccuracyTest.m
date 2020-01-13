@@ -1,5 +1,4 @@
 %{
-
 This script is used to test the accuracy of the model obtained in the
 modeltraining script. If the model obtains over a certain percentage of
 passes in the confusion matrix it is accepted as a sound model.
@@ -48,15 +47,13 @@ for c = 1:height(testdata)
     end
 end
 
+% Plot the test data in yellow
 for a = 1:height(testdata)
         plot(testdata(a,:).Burglarys, testdata(a,:).index,'yo','MarkerSize',5);
         hold on;
 end
 
-% Now attempt to test each against the model using only either burg number
-% or index.
-
-% Accuracy test against burglary numbers
+% Accuracy test using confusion matrix
 incorrect = 0;
 correct = 0;
 class = 1;
@@ -85,21 +82,17 @@ for a = 1:height(testdata)
             end
         end
     end
-    highest = 1;
-    disp(".....................................");
-    disp(pclass);
-    disp("actual" + testdata(a,:).ActualClass);
     for d = 1:3
         if pclass(1,d) > pclass(1,highest)
             highest = d;
         end
     end
-        disp("d: " + d);
     if testdata(a,:).ActualClass == highest
         correct = correct + 1;
     else
         incorrect = incorrect + 1;
     end
 end
-
-%bar(categorical({'BCorrect','BIncorrect','ICorrect','IIncorrect'}),[bcorrect, bincorrect,icorrect, iincorrect]);
+x = ["Correct" "Incorrect"];
+y = [correct incorrect];
+bar(1,2);
