@@ -27,7 +27,6 @@ while a < height(testdata)
     for b = 1:height(testdata)
         if isequal(testdata(a,1),testdata(b,1))
             count = count + 1;
-            disp("testing: " + a + "with: " + b + " " +count);
             testdata{a,3} = count;
         end
     end

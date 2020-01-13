@@ -17,7 +17,6 @@ while a < height(burglaryOnly)
     for b = 1:height(burglaryOnly)
         if isequal(burglaryOnly(a,1),burglaryOnly(b,1))
             count = count + 1;
-            disp("testing: " + a + "with: " + b + " " +count);
             burglaryOnly{a,3} = count;
         end
     end
@@ -30,7 +29,6 @@ burglaryOnly = unique(burglaryOnly);
 cleanHousePrices = housePrices(housePrices.HousePrice > 10000,:);
 cleanHousePrices = unique(cleanHousePrices);
 consolidatedData = innerjoin(cleanHousePrices,burglaryOnly);
-disp(consolidatedData);
 consolidatedData.Properties.VariableNames = {'PostCode','HousePrice','ContentsValue','CrimeType','Count'};
 % Data Cleaning
 

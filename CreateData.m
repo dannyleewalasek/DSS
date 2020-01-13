@@ -9,7 +9,7 @@ housePrices = table("LS8_1PR", "250000", "5000");
 housePrices.Properties.VariableNames = {'PostCode','HousePrice','ContentsValue'};
 a = 2;
 while a < 900
-    c = a * 2; %a +  randi(round(50-(a/20))) + 1;
+    c = a * 2;
     disp(c);
     for b = a:c
         testData{b,1} = strcat("LS",num2str(a),"1QE");
