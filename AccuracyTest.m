@@ -20,7 +20,7 @@ a = 1;
 %                         FN | TN
 confusionMatrix = [0,0;
                     0,0];
-
+                
 %count number of burglarys per postcode
 while a < height(testdata)
     count = 0;
@@ -95,5 +95,8 @@ for a = 1:height(testdata)
         confusionMatrix(2,1) = confusionMatrix(2,1) + (height(clusterPositions) - 1); % False negatives
     end
 end
-disp(correct + " correct guesses");
+
+matrixAccuracy =(confusionMatrix(1,1) + confusionMatrix(2,2)) / (confusionMatrix(1,1) + confusionMatrix(2,2) + confusionMatrix(1,2) + confusionMatrix(2,1));
+
+disp("Model accuracy: " + matrixAccuracy);
 disp(confusionMatrix);

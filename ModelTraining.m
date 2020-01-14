@@ -70,15 +70,14 @@ for h = 1:numK
     end
 end
 
-% Replace NAN's with 0.3's, this is because they only appear in a row with
-% all NaN's
+% Replace NAN's with equal value
 for n = 1:numK
     for o = 2:numK+1
         if isnan(burg(n,o))
-            burg(n,o) = 0.333;
+            burg(n,o) = 1/numK;
         end
         if isnan(index(n,o))
-            index(n,o) = 0.333;
+            index(n,o) = 1/numK;
         end
     end
 end
