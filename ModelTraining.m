@@ -7,8 +7,10 @@ clear;
 trainingData = readtable('meanIndexPerPostcode');
 trainingData.class(:,:) = zeros();
 
+% Intra cluster testing
 % Decide number of clusters. this will be decided algortihmically
-numK = 5;
+eva = evalclusters(table2array(trainingData),'kmeans','CalinskiHarabasz','KList',[1:10]);
+numK = eva.OptimalK;
 
 % Run Kmeans
 [idx,C]  = kmeans(table2array(trainingData),numK);
@@ -16,7 +18,7 @@ numK = 5;
 % Save cluster positions
 writematrix(C);
 
-% Intra cluster testing
+
 
 %Determine class of each point using euclidean formula.
 for c = 1:height(trainingData)
