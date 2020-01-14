@@ -16,6 +16,8 @@ numK = 5;
 % Save cluster positions
 writematrix(C);
 
+% Intra cluster testing
+
 %Determine class of each point using euclidean formula.
 for c = 1:height(trainingData)
     minDistance = 99999999999999999999999999;
