@@ -109,20 +109,11 @@ disp(indexProbabilities);
 % Plot each data point colour coded by class
 % Fix to allow for variable K
 for z = 1:height(trainingData)
-    if trainingData(z,:).class == 1
-        plot(trainingData(z,:).Count, trainingData(z,:).index,'bo','MarkerSize',5);
-    elseif trainingData(z,:).class == 2
         plot(trainingData(z,:).Count, trainingData(z,:).index,'go','MarkerSize',5);
-    elseif trainingData(z,:).class == 3
-        plot(trainingData(z,:).Count, trainingData(z,:).index,'ro','MarkerSize',5);
-    end
     hold on;
 end
 
 % Plot of Kmeans points
-plot(C(1,1),C(1,2),'b*','MarkerSize',5);
-    hold on;
-plot(C(2,1),C(2,2),'g*','MarkerSize',5);
-    hold on;
-plot(C(3,1),C(3,2),'r*','MarkerSize',5);
-    hold off;
+for a = 1:size(C)
+plot(C(a,1),C(a,2),'b*','MarkerSize',5);
+end

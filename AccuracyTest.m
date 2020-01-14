@@ -41,7 +41,7 @@ testdata(testdata.Burglarys == 0, :) = [];
 % checking them against the K cluster positions using euclidean distance
 for c = 1:height(testdata)
     minDistance = 99999999999999999999999999;
-    for d = 1:size(clusterPositions)
+    for d = 1:height(clusterPositions)
         if sqrt((clusterPositions{d,1} - testdata(c,:).Burglarys).^2 + (clusterPositions{d,2} - testdata(c,:).index).^2) < minDistance
             testdata(c,:).ActualClass = d;
             minDistance = sqrt((clusterPositions{d,1} - testdata(c,:).Burglarys).^2 + (clusterPositions{d,2} - testdata(c,:).index).^2);
@@ -85,10 +85,15 @@ for a = 1:height(testdata)
             highest = d;
         end
     end
-    if testdata(a,:).ActualClass == highest
+	if testdata(a,:).ActualClass == highest
         correct = correct + 1;
-    else
+        confusionMatrix(1,1) = confusionMatrix(1,1) + 1; % Correct positives
+        confusionMatrix(2,2) = confusionMatrix(2,2) + (height(clusterPositions) - 1); % correct negatives   
+	else
         incorrect = incorrect + 1;
+        confusionMatrix(1,2) = confusionMatrix(1,2) + 1; % False positives
+        confusionMatrix(2,1) = confusionMatrix(2,1) + (height(clusterPositions) - 1); % False negatives
     end
 end
 disp(correct + " correct guesses");
+disp(confusionMatrix);
