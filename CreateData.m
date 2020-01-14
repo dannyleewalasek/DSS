@@ -10,16 +10,10 @@ housePrices.Properties.VariableNames = {'PostCode','HousePrice','ContentsValue'}
 a = 2;
 while a < 900
     c = a * 2;
-    disp(c);
     for b = a:c
-        testData{b,1} = strcat("LS",num2str(a),"1QE");
-        crimeStats{b,1} = strcat("LS",num2str(a),"1QE");
-        housePrices{b,1} = "LS"+num2str(a)+"1QE";
-        % make some of these not burglary
-        crimeStats(b,:).CrimeType = "Burglary";
-        housePrices(b,:).HousePrice = a * 1000;
-        housePrices(b,:).ContentsValue = a + 1000 ;
-        testData(b,:).index = (a * 1000)/100 + ( 1+1000);
+        testData{b,:} = [strcat("LS",num2str(a),"1QE"),(a * 1000)/100 + ( 1+1000),0,0];
+        crimeStats{b,:} = [strcat("LS",num2str(a),"1QE"),"Burglary"];
+        housePrices{b,:} = ["LS"+num2str(a)+"1QE",a * 1000,a + 1000];
     end
     a = c;
 end

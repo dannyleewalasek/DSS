@@ -64,22 +64,22 @@ currentProbability = 0;
 for a = 1:height(testdata)
     highest = 1;
     pclass = [0,0,0,0];
-	for b = 1:height(clusterPositions)
+        for b = 1:height(clusterPositions)
         if testdata(a,:).Burglarys <= burglaryProbabilities(b,1)
             for c = 2:height(clusterPositions) + 1
                 pclass(c-1) = burglaryProbabilities(b,c);
             end
             break;
         end
-	end
-	for b = 1:height(clusterPositions)
-        if testdata(a,:).index <= indexProbabilities(b,1)
-            for c = 2:height(clusterPositions) + 1
-                pclass(c-1) = pclass(c-1) + indexProbabilities(b,c);
+end
+       for b = 1:height(clusterPositions)
+            if testdata(a,:).index <= indexProbabilities(b,1)
+                for c = 2:height(clusterPositions) + 1
+                        pclass(c-1) = pclass(c-1) + indexProbabilities(b,c);
+                end
+                break;
             end
-        break;
-        end
-	end
+       end
     for d = 1:height(clusterPositions)
         if pclass(1,d) > pclass(1,highest)
             highest = d;
