@@ -18,9 +18,12 @@ numK = eva.OptimalK;
 % Save cluster positions
 writematrix(C);
 
-
+for c = 1:height(trainingData)
+    trainingData(c,:).class = idx(c,1);
+end
 
 %Set class of each point
+%{
 for c = 1:height(trainingData)
     minDistance = 99999999999999999999999999;
     for d = 1:size(C)
@@ -30,31 +33,35 @@ for c = 1:height(trainingData)
         end
     end
 end
+%}
 
 % -----------------Probability calculation -------------------
 
 % Set ranges in new array to be used for probabilities
-maxIndex = max(trainingData.index);
-maxBurglarys = max(trainingData.Count);
-index = [];
-burg = [];
-index(1,1:numK+2) = 0; % these will have to allow for k other than 3.
-burg(1,1:numK+2) = 0;
+maxIncidents = max(trainingData.NumberOfIncidents);
+maxAge = max(trainingData.Age);
+maxCarPrice = max(trainingData.CarPrice);
+incidents = []; %index
+age = []; %burg
+price = [];
+incidents(1,1:numK+2) = 0; % these will have to allow for k other than 3.
+age(1,1:numK+2) = 0;
+price(1,1:numK+2) = 0;
 for e = 1:numK
-    burg(e,1) = maxBurglarys/numK * e;
-    index(e,1) = maxIndex/numK * e;
+    age(e,1) = maxAge/numK * e;
+    incidents(e,1) = maxIncidents/numK * e;
 end
 
 % Counting number of classes in each range
 for f = 1:height(trainingData)
     for g = 1:numK
-        if (trainingData(f,:).Count <= burg(g,1))
-            burg(g,trainingData(f,:).class +1 ) = burg(g,trainingData(f,:).class + 1) + 1;
-            burg(g,numK+2) = burg(g,numK+2)+1; 
+        if (trainingData(f,:).NumberOfIncidents <= incidents(g,1))
+            incidents(g,trainingData(f,:).class +1 ) = incidents(g,trainingData(f,:).class + 1) + 1;
+            incidents(g,numK+2) = incidents(g,numK+2)+1; 
         end
-        if (trainingData(f,:).index <= index(g,1))
-            index(g,trainingData(f,:).class +1 ) = index(g,trainingData(f,:).class + 1) + 1;
-            index(g,numK+2) = index(g,numK+2)+1;
+        if (trainingData(f,:).Age <= age(g,1))
+            age(g,trainingData(f,:).class +1 ) = age(g,trainingData(f,:).class + 1) + 1;
+            age(g,numK+2) = age(g,numK+2)+1;
         end
     end
 end
@@ -65,19 +72,19 @@ writetable(trainingData);
 % Calculating probabilities
 for h = 1:numK
     for i = 2:numK+1
-        burg(h,i) = burg(h,i)/ burg(h,numK+2);
-        index(h,i) = index(h,i)/ index(h,numK+2);
+        age(h,i) = age(h,i)/ age(h,numK+2);
+        incidents(h,i) = incidents(h,i)/ incidents(h,numK+2);
     end
 end
 
 % Replace NAN's with equal value
 for n = 1:numK
     for o = 2:numK+1
-        if isnan(burg(n,o))
-            burg(n,o) = 1/numK;
+        if isnan(age(n,o))
+            age(n,o) = 1/numK;
         end
-        if isnan(index(n,o))
-            index(n,o) = 1/numK;
+        if isnan(incidents(n,o))
+            incidents(n,o) = 1/numK;
         end
     end
 end
@@ -90,25 +97,25 @@ end
 names{1,numK + 2} = 'total';
 
 % Convert array to table and add headings
-indexProbabilities = array2table(index,...
+incidentsProbabilities = array2table(incidents,...
     'VariableNames',names);
-burglaryProbabilities = array2table(burg,...
+ageProbabilities = array2table(age,...
     'VariableNames',names);
 
 % Save tables to file which make up our model
-writetable(burglaryProbabilities);
-writetable(indexProbabilities);
+writetable(incidentsProbabilities);
+writetable(ageProbabilities);
 
 % Display results
-disp("----------- Burglary probabilities ----------- ");
-disp(burglaryProbabilities);
-disp("----------- Index probabilities ----------- ");
-disp(indexProbabilities);
+disp("----------- Incident probabilities ----------- ");
+disp(incidentsProbabilities);
+disp("----------- Age probabilities ----------- ");
+disp(ageProbabilities);
 
 % Plot each data point colour coded by class
 % Fix to allow for variable K
 for z = 1:height(trainingData)
-        plot(trainingData(z,:).Count, trainingData(z,:).index,'go','MarkerSize',5);
+        plot(trainingData(z,:).NumberOfIncidents, trainingData(z,:).Age,'go','MarkerSize',5);
     hold on;
 end
 
