@@ -127,9 +127,7 @@ for a = 1:height(testdata)
     end
 end
 
+% Calculate model accuracy and display confusion matrix.
 matrixAccuracy =(confusionMatrix(1,1) + confusionMatrix(2,2)) / (confusionMatrix(1,1) + confusionMatrix(2,2) + confusionMatrix(1,2) + confusionMatrix(2,1));
-
 disp("Model accuracy: " + matrixAccuracy);
 disp(confusionMatrix);
-
-plotconfusion()
