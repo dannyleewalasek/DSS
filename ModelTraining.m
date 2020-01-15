@@ -6,34 +6,25 @@ clustering points.
 clear;
 trainingData = readtable('trainingData');
 trainingData.class(:,:) = zeros();
+disp(trainingData);
+kMeansData = trainingData(:,1:3);
 
 % Intra cluster testing
 % Decide number of clusters. this will be decided algortihmically
-eva = evalclusters(table2array(trainingData),'kmeans','CalinskiHarabasz','KList',[1:10]);
+eva = evalclusters(table2array(kMeansData),'kmeans','CalinskiHarabasz','KList',[1:10]);
 numK = eva.OptimalK;
 
 % Run Kmeans
-[idx,C]  = kmeans(table2array(trainingData),numK);
+[idx,C]  = kmeans(table2array(kMeansData),numK);
 
 % Save cluster positions
 writematrix(C);
 
+%Set class of each point
+
 for c = 1:height(trainingData)
     trainingData(c,:).class = idx(c,1);
 end
-
-%Set class of each point
-%{
-for c = 1:height(trainingData)
-    minDistance = 99999999999999999999999999;
-    for d = 1:size(C)
-        if sqrt((C(d,1) - trainingData(c,:).NumberOfIncidents).^2 + (C(d,2) - trainingData(c,:).index).^2) < minDistance
-            trainingData(c,:).class = d;
-            minDistance = sqrt((C(d,1) - trainingData(c,:).NumberOfIncidents).^2 + (C(d,2) - trainingData(c,:).index).^2);
-        end
-    end
-end
-%}
 
 % -----------------Probability calculation -------------------
 

@@ -41,6 +41,7 @@ testdata(testdata.NumberOfIncidents == 0, :) = [];
 
 % Check each item in the test data to see which class it belongs to by
 % checking them against the K cluster positions using euclidean distance
+
 % NEED TO MAKE 3D.
 for c = 1:height(testdata)
     minDistance = 99999999999999999999999999;
@@ -51,6 +52,23 @@ for c = 1:height(testdata)
         end
     end
 end
+
+disp(testdata);
+for c = 1:height(testdata)
+           pos = [testdata(c,2),testdata(c,3),testdata(c,4)];
+           highest = 0;
+           distance = 9999999999;
+   for d = 1:height(clusterPositions)
+       centralPos = clusterPositions(d,:);
+       distanceNew = sqrt(sum((table2array(pos) - table2array(centralPos)).^2, 2));
+       if distanceNew <= distance
+           highest = d;
+           distance = distanceNew;
+       end
+   end
+   testdata(c,:).ExpectedClass = highest;
+end
+disp(testdata);
 
 % Plot the test data in yellow
 for a = 1:height(testdata)
@@ -63,7 +81,7 @@ incorrect = 0;
 correct = 0;
 class = 1;
 currentProbability = 0;
-% !NEED TO STORE FOR EACH CLASS IF IT WAS A FALSE/TRUE POSITIVE OR NEGATIVE
+
 for a = 1:height(testdata)
     highest = 1;
     pclass = [0,0,0,0];
@@ -104,6 +122,8 @@ for a = 1:height(testdata)
         incorrect = incorrect + 1;
         confusionMatrix(1,2) = confusionMatrix(1,2) + 1; % False positives
         confusionMatrix(2,1) = confusionMatrix(2,1) + (height(clusterPositions) - 1); % False negatives
+        disp("should be: " + testdata(a,:).ExpectedClass);
+        disp("but was: " + highest);
     end
 end
 
