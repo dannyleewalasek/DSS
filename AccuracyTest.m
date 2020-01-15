@@ -11,8 +11,10 @@ testdata = readtable('testData.txt');
 clusterPositions = readtable('c.txt');
 incidentProbabilities = readtable('incidentProbabilities');
 incidentProbabilities = table2array(incidentProbabilities);
-ageProbabilities = readtable('indexProbabilities');
+ageProbabilities = readtable('ageProbabilities');
 ageProbabilities = table2array(ageProbabilities);
+priceProbabilities = readtable('priceProbabilities');
+priceProbabilities = table2array(priceProbabilities);
 burglaryOnly{:,3} = 0;
 a = 1;
 
@@ -78,7 +80,15 @@ for a = 1:height(testdata)
             for c = 2:height(clusterPositions) + 1
                 pclass(c-1) = pclass(c-1) + ageProbabilities(b,c);
             end
-        break;
+            break;
+        end
+    end
+    for b = 1:height(clusterPositions)
+        if testdata(a,:).CarPrice <= priceProbabilities(b,1)
+            for c = 2:height(clusterPositions) + 1
+                pclass(c-1) = pclass(c-1) + priceProbabilities(b,c);
+            end
+            break;
         end
 	end
     for d = 1:height(clusterPositions)

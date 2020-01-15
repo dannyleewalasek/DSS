@@ -50,6 +50,7 @@ price(1,1:numK+2) = 0;
 for e = 1:numK
     age(e,1) = maxAge/numK * e;
     incidents(e,1) = maxIncidents/numK * e;
+    price(e,1) = maxCarPrice/numK * e;
 end
 
 % Counting number of classes in each range
@@ -63,6 +64,10 @@ for f = 1:height(trainingData)
             age(g,trainingData(f,:).class +1 ) = age(g,trainingData(f,:).class + 1) + 1;
             age(g,numK+2) = age(g,numK+2)+1;
         end
+        if (trainingData(f,:).CarPrice <= price(g,1))
+            price(g,trainingData(f,:).class +1 ) = price(g,trainingData(f,:).class + 1) + 1;
+            price(g,numK+2) = age(g,numK+2)+1;
+        end
     end
 end
 
@@ -74,6 +79,7 @@ for h = 1:numK
     for i = 2:numK+1
         age(h,i) = age(h,i)/ age(h,numK+2);
         incidents(h,i) = incidents(h,i)/ incidents(h,numK+2);
+        price(h,i) = price(h,i)/ price(h,numK+2);
     end
 end
 
@@ -85,6 +91,9 @@ for n = 1:numK
         end
         if isnan(incidents(n,o))
             incidents(n,o) = 1/numK;
+        end
+        if isnan(price(n,o))
+            price(n,o) = 1/numK;
         end
     end
 end
@@ -101,16 +110,21 @@ incidentProbabilities = array2table(incidents,...
     'VariableNames',names);
 ageProbabilities = array2table(age,...
     'VariableNames',names);
+priceProbabilities = array2table(price,...
+    'VariableNames',names);
 
 % Save tables to file which make up our model
 writetable(incidentProbabilities);
 writetable(ageProbabilities);
+writetable(priceProbabilities);
 
 % Display results
 disp("----------- Incident probabilities ----------- ");
 disp(incidentProbabilities);
 disp("----------- Age probabilities ----------- ");
 disp(ageProbabilities);
+disp("----------- Car Price probabilities ----------- ");
+disp(priceProbabilities);
 
 % Plot each data point colour coded by class
 % Fix to allow for variable K
