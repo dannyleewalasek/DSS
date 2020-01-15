@@ -4,7 +4,7 @@ preperation stage and outputting a number of probability tables and
 clustering points.
 %}
 clear;
-trainingData = readtable('meanIndexPerPostcode');
+trainingData = readtable('trainingData');
 trainingData.class(:,:) = zeros();
 
 % Intra cluster testing
@@ -20,13 +20,13 @@ writematrix(C);
 
 
 
-%Determine class of each point using euclidean formula.
+%Set class of each point
 for c = 1:height(trainingData)
     minDistance = 99999999999999999999999999;
     for d = 1:size(C)
-        if sqrt((C(d,1) - trainingData(c,:).Count).^2 + (C(d,2) - trainingData(c,:).index).^2) < minDistance
+        if sqrt((C(d,1) - trainingData(c,:).NumberOfIncidents).^2 + (C(d,2) - trainingData(c,:).index).^2) < minDistance
             trainingData(c,:).class = d;
-            minDistance = sqrt((C(d,1) - trainingData(c,:).Count).^2 + (C(d,2) - trainingData(c,:).index).^2);
+            minDistance = sqrt((C(d,1) - trainingData(c,:).NumberOfIncidents).^2 + (C(d,2) - trainingData(c,:).index).^2);
         end
     end
 end

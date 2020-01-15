@@ -1,8 +1,4 @@
-Count,index
-128,2408
-16,1176
-256,3816
-32,1352
-513,6632
-64,1704
-1,7500
+Name,CarPrice,IncidentDate,Age,NumberOfIncidents
+Danny,1000,101010,20,1
+Name,1000,IncidentDate,Age,0
+Name,1000,IncidentDate,Age,1023
