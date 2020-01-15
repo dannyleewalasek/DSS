@@ -12,7 +12,7 @@ while a < 900
     c = a * 2;
     for b = a:c
         testData{b,:} = ["Name",a,a,a*2,0];
-        carSales{b,:} = ["Name",1000];
+        carSales{b,:} = ["Name",a * 100];
         incidentData{b,:} = ["Name","IncidentDate",a];
     end
     a = c;

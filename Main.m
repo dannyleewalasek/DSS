@@ -12,4 +12,4 @@ ModelTraining;
 % Test the accuracy of the model
 AccuracyTest;
 % Use the model to classify a new input
-Classification;
+%Classification;

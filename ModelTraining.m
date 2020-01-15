@@ -119,14 +119,17 @@ disp(priceProbabilities);
 
 % Plot each data point colour coded by class
 % Fix to allow for variable K
-%{
+
 for z = 1:height(trainingData)
-        plot(trainingData(z,:).NumberOfIncidents, trainingData(z,:).Age,'go','MarkerSize',5);
+        scatter3(trainingData(:,:).Age,trainingData(:,:).NumberOfIncidents,trainingData(:,:).CarPrice);
     hold on;
 end
-%}
 
-scatter3(trainingData(:,:).Age,trainingData(:,:).NumberOfIncidents,trainingData(:,:).CarPrice);
+
+title('All Data');
+xlabel('X');
+ylabel('Y');
+zlabel('Z');
 
 % Plot of Kmeans points
 %{

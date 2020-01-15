@@ -131,3 +131,5 @@ matrixAccuracy =(confusionMatrix(1,1) + confusionMatrix(2,2)) / (confusionMatrix
 
 disp("Model accuracy: " + matrixAccuracy);
 disp(confusionMatrix);
+
+plotconfusion()
