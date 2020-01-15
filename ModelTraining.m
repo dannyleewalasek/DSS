@@ -97,18 +97,18 @@ end
 names{1,numK + 2} = 'total';
 
 % Convert array to table and add headings
-incidentsProbabilities = array2table(incidents,...
+incidentProbabilities = array2table(incidents,...
     'VariableNames',names);
 ageProbabilities = array2table(age,...
     'VariableNames',names);
 
 % Save tables to file which make up our model
-writetable(incidentsProbabilities);
+writetable(incidentProbabilities);
 writetable(ageProbabilities);
 
 % Display results
 disp("----------- Incident probabilities ----------- ");
-disp(incidentsProbabilities);
+disp(incidentProbabilities);
 disp("----------- Age probabilities ----------- ");
 disp(ageProbabilities);
 

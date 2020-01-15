@@ -9,10 +9,10 @@ clear;
 % handle.
 testdata = readtable('testData.txt');
 clusterPositions = readtable('c.txt');
-burglaryProbabilities = readtable('burglaryProbabilities');
-burglaryProbabilities = table2array(burglaryProbabilities);
-indexProbabilities = readtable('indexProbabilities');
-indexProbabilities = table2array(indexProbabilities);
+incidentProbabilities = readtable('incidentProbabilities');
+incidentProbabilities = table2array(incidentProbabilities);
+ageProbabilities = readtable('indexProbabilities');
+ageProbabilities = table2array(ageProbabilities);
 burglaryOnly{:,3} = 0;
 a = 1;
 
@@ -21,7 +21,7 @@ a = 1;
 confusionMatrix = [0,0;
                     0,0];
                 
-%count number of burglarys per postcode
+%count number of
 while a < height(testdata)
     count = 0;
     for b = 1:height(testdata)
@@ -35,23 +35,24 @@ while a < height(testdata)
 end
 
 testdata = unique(testdata);
-testdata(testdata.Burglarys == 0, :) = [];
+testdata(testdata.NumberOfIncidents == 0, :) = [];
 
 % Check each item in the test data to see which class it belongs to by
 % checking them against the K cluster positions using euclidean distance
+% NEED TO MAKE 3D.
 for c = 1:height(testdata)
     minDistance = 99999999999999999999999999;
     for d = 1:height(clusterPositions)
-        if sqrt((clusterPositions{d,1} - testdata(c,:).Burglarys).^2 + (clusterPositions{d,2} - testdata(c,:).index).^2) < minDistance
-            testdata(c,:).ActualClass = d;
-            minDistance = sqrt((clusterPositions{d,1} - testdata(c,:).Burglarys).^2 + (clusterPositions{d,2} - testdata(c,:).index).^2);
+        if sqrt((clusterPositions{d,1} - testdata(c,:).NumberOfIncidents).^2 + (clusterPositions{d,2} - testdata(c,:).Age).^2) < minDistance
+            testdata(c,:).ExpectedClass = d;
+            minDistance = sqrt((clusterPositions{d,1} - testdata(c,:).NumberOfIncidents).^2 + (clusterPositions{d,2} - testdata(c,:).Age).^2);
         end
     end
 end
 
 % Plot the test data in yellow
 for a = 1:height(testdata)
-        plot(testdata(a,:).Burglarys, testdata(a,:).index,'yo','MarkerSize',5);
+        plot(testdata(a,:).NumberOfIncidents, testdata(a,:).Age,'yo','MarkerSize',5);
         hold on;
 end
 
@@ -65,17 +66,17 @@ for a = 1:height(testdata)
     highest = 1;
     pclass = [0,0,0,0];
 	for b = 1:height(clusterPositions)
-        if testdata(a,:).Burglarys <= burglaryProbabilities(b,1)
+        if testdata(a,:).NumberOfIncidents <= incidentProbabilities(b,1)
             for c = 2:height(clusterPositions) + 1
-                pclass(c-1) = burglaryProbabilities(b,c);
+                pclass(c-1) = incidentProbabilities(b,c);
             end
             break;
         end
 	end
 	for b = 1:height(clusterPositions)
-        if testdata(a,:).index <= indexProbabilities(b,1)
+        if testdata(a,:).Age <= ageProbabilities(b,1)
             for c = 2:height(clusterPositions) + 1
-                pclass(c-1) = pclass(c-1) + indexProbabilities(b,c);
+                pclass(c-1) = pclass(c-1) + ageProbabilities(b,c);
             end
         break;
         end
@@ -85,7 +86,7 @@ for a = 1:height(testdata)
             highest = d;
         end
     end
-	if testdata(a,:).ActualClass == highest
+	if testdata(a,:).ExpectedClass == highest
         correct = correct + 1;
         confusionMatrix(1,1) = confusionMatrix(1,1) + 1; % Correct positives
         confusionMatrix(2,2) = confusionMatrix(2,2) + (height(clusterPositions) - 1); % correct negatives   
