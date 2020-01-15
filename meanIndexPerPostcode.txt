@@ -1,4 +1,0 @@
-Name,CarPrice,IncidentDate,Age,NumberOfIncidents
-Danny,1000,101010,20,1
-Name,1000,IncidentDate,Age,0
-Name,1000,IncidentDate,Age,1023
