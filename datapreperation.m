@@ -26,6 +26,8 @@ end
 
 incidentData = unique(incidentData);
 
+incidentData(incidentData.Var4 == 0, :) = [];
+
 carSales = unique(carSales);
 trainingData = innerjoin(carSales,incidentData);
 trainingData.Properties.VariableNames = {'Name','CarPrice','IncidentDate','Age','NumberOfIncidents'};

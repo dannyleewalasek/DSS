@@ -53,7 +53,6 @@ for c = 1:height(testdata)
     end
 end
 
-disp(testdata);
 for c = 1:height(testdata)
            pos = [testdata(c,2),testdata(c,3),testdata(c,4)];
            highest = 0;
@@ -67,13 +66,6 @@ for c = 1:height(testdata)
        end
    end
    testdata(c,:).ExpectedClass = highest;
-end
-disp(testdata);
-
-% Plot the test data in yellow
-for a = 1:height(testdata)
-        plot(testdata(a,:).NumberOfIncidents, testdata(a,:).Age,'yo','MarkerSize',5);
-        hold on;
 end
 
 % Accuracy test using confusion matrix
@@ -122,8 +114,6 @@ for a = 1:height(testdata)
         incorrect = incorrect + 1;
         confusionMatrix(1,2) = confusionMatrix(1,2) + 1; % False positives
         confusionMatrix(2,1) = confusionMatrix(2,1) + (height(clusterPositions) - 1); % False negatives
-        disp("should be: " + testdata(a,:).ExpectedClass);
-        disp("but was: " + highest);
     end
 end
 
@@ -131,16 +121,11 @@ end
 matrixAccuracy =(confusionMatrix(1,1) + confusionMatrix(2,2)) / (confusionMatrix(1,1) + confusionMatrix(2,2) + confusionMatrix(1,2) + confusionMatrix(2,1));
 
 % Display confusion matrix
-disp("____")
-disp("|" + confusionMatrix(1,1) + "|" + confusionMatrix(1,2) + "|") ;
-disp("____")
-disp("|" + confusionMatrix(2,1) + "|" + confusionMatrix(2,1) + "|") ;
-
-% Display model accuracy
-disp("The accuracy of the model has been calculated at: " + matrixAccuracy);
-
 f = figure;
 uit = uitable(f,'Data',confusionMatrix,'Position',[20 20 200 100]);
 uit.ColumnName = {'+','-'};
 uit.ColumnEditable = true;
 uit.RowName = {'+','-'};
+
+% Display model accuracy
+disp("The accuracy of the model has been calculated at: " + matrixAccuracy);

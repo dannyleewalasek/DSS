@@ -11,9 +11,9 @@ a = 2;
 while a < 900
     c = a * 2;
     for b = a:c
-        testData{b,:} = ["Name",a,a,a*2,0];
-        carSales{b,:} = ["Name",a * 100];
-        incidentData{b,:} = ["Name","IncidentDate",a];
+        testData{b,:} = ["Name" + a, a , a , a*2,0];
+        carSales{b,:} = ["Name" + a ,a * 100];
+        incidentData{b,:} = ["Name" + a, "IncidentDate"+a ,a];
     end
     a = c;
 end

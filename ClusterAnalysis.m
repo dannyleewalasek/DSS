@@ -8,7 +8,7 @@ clusterPositions = readtable('c.txt');
 
 averages = [0,0,0,0,0]; % Class, Age, Car Price, Incidents, total
 averages(1:height(clusterPositions),1:5) = 0;
-
+class = 0;
 for a = 1:height(trainingData)
     class = trainingData(a,:).class;
     averages(class,:) = [class, averages(class,2) + trainingData(a,:).Age, averages(class,3) + trainingData(a,:).CarPrice, averages(class,4) + trainingData(a,:).NumberOfIncidents, averages(class,5) + 1];
