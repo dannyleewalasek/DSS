@@ -127,7 +127,20 @@ for a = 1:height(testdata)
     end
 end
 
-% Calculate model accuracy and display confusion matrix.
+% Calculate model accuracy
 matrixAccuracy =(confusionMatrix(1,1) + confusionMatrix(2,2)) / (confusionMatrix(1,1) + confusionMatrix(2,2) + confusionMatrix(1,2) + confusionMatrix(2,1));
-disp("Model accuracy: " + matrixAccuracy);
-disp(confusionMatrix);
+
+% Display confusion matrix
+disp("____")
+disp("|" + confusionMatrix(1,1) + "|" + confusionMatrix(1,2) + "|") ;
+disp("____")
+disp("|" + confusionMatrix(2,1) + "|" + confusionMatrix(2,1) + "|") ;
+
+% Display model accuracy
+disp("The accuracy of the model has been calculated at: " + matrixAccuracy);
+
+f = figure;
+uit = uitable(f,'Data',confusionMatrix,'Position',[20 20 200 100]);
+uit.ColumnName = {'+','-'};
+uit.ColumnEditable = true;
+uit.RowName = {'+','-'};
