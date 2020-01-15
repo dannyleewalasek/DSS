@@ -114,12 +114,18 @@ disp(ageProbabilities);
 
 % Plot each data point colour coded by class
 % Fix to allow for variable K
+%{
 for z = 1:height(trainingData)
         plot(trainingData(z,:).NumberOfIncidents, trainingData(z,:).Age,'go','MarkerSize',5);
     hold on;
 end
+%}
+
+scatter3(trainingData(:,:).Age,trainingData(:,:).NumberOfIncidents,trainingData(:,:).CarPrice);
 
 % Plot of Kmeans points
+%{
 for a = 1:size(C)
 plot(C(a,1),C(a,2),'b*','MarkerSize',5);
 end
+%}
