@@ -14,9 +14,9 @@ maxAge = max(trainingData.Age);
 maxCarPrice = max(trainingData.CarValue);
 age = []; %burg
 price = [];
-age(1,1:5) = 0;
-price(1,1:5) = 0;
-claims = [0,0,0,0,0;1,0,0,0,0;2,0,0,0,0;3,0,0,0,0;4,0,0,0,0;5,0,0,0,0;];
+age(1:5,1:5) = 0;
+price(1:5,1:5) = 0;
+claims = [0,0,0,0,0;1,0,0,0,0;2,0,0,0,0;3,0,0,0,0;4,0,0,0,0;5,0,0,0,0;0,0,0,0,0;];
 for e = 1:4
     age(e,1) = maxAge/4 * e;
     price(e,1) = maxCarPrice/4 * e;
@@ -55,11 +55,35 @@ for f = 1:height(trainingData)
     end
 end
 
+disp(claims);
+
+for a = 1:size(claims,1)-1
+   for b = 2:3
+      claims(7,b) = claims(7,b) + claims(a,b);
+   end
+end
+
+for a = 1:size(age,1)-1
+   for b = 2:3
+      age(5,b) = age(5,b) + age(a,b);
+   end
+end
+
+for a = 1:size(price,1)-1
+   for b = 2:3
+      price(5,b) = price(5,b) + price(a,b);
+   end
+end
+
+%{
 % Calculate overall probability
-for a = 1:size(claims,1)
-    for b = 2:3
+for a = 1:size(claims,1)-1
+    totalCol = 0;
+        claims(7,2) = claims(7,2) + claims(a,2);
+        claims(7,3) = claims(7,3) + claims(a,3);
+	for b = 2:3
         claims(a,b) = claims(a,b)/claims(a,4);
-    end
+	end
     total = 0;
     for b = 1:size(claims,1)
         total = total + claims(b,4);
@@ -86,7 +110,7 @@ for a = 1:size(price,1)
     end
     price(a,5) = price(a,4)/total;
 end
-
+%}
 names = ["Range", "Fraud", "NoFraud", "Total", "OverallLikelyhood"];
 
 % Convert array to table and add headings

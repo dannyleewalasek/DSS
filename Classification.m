@@ -23,22 +23,26 @@ label = predict(Mdl,input(1,2));
 disp(label);
 
 currentProbability = 0;
+opposite = 1;
 
-    highest = 1;
+    highest = 2;
     pclass = [0,0];
     totalToDivideBy = 0;
 	for b = 1:size(ageProbabilities,1)
         if input(1,1) <= ageProbabilities(b,1)
             for c = 2:3
-                pclass(c-1) = ageProbabilities(b,c);
+                pclass(c-1) = ageProbabilities(b,c) / ageProbabilities(5,c);
+                disp(c + ": " + ageProbabilities(b,c) / ageProbabilities(5,c) + " * " );
             end
             break;
         end
     end
-	for b = 1:size(priceProbabilities,1)
-        if input(1,1) <= priceProbabilities(b,1)
+	for e = 1:size(priceProbabilities,1)
+        if input(1,1) <= priceProbabilities(e,1)
             for c = 2:3
-                pclass(c-1) = pclass(c-1) * priceProbabilities(b,c);
+                pclass(c-1) = priceProbabilities(b,c) / priceProbabilities(5,c);
+                disp(c + ": " + priceProbabilities(b,c) / priceProbabilities(5,c) + " * " );
+               % pclass(c-1) = pclass(c-1) * priceProbabilities(e,c) / priceProbabilities(5,c);
             end
             break;
         end
@@ -47,8 +51,16 @@ currentProbability = 0;
     for d = 1:2
         if pclass(1,d) > pclass(1,highest)
             highest = d;
+            if highest == 1
+                oppposite = 2;
+            else
+                opposite = 1;
+            end
         end
     end
-    total = (0.187 * 0.5) / ageProbabilities(1,5) ;
+    topHalf = pclass(1,highest) * (ageProbabilities(b,highest+1)/ ageProbabilities(5,highest+1)) ;
+    bottomHalf = (ageProbabilities(5,highest+1) / ageProbabilities(5,opposite+1));
+    total = topHalf/bottomHalf;
     disp(total);
     disp("predicated class: "+ (highest - 1));
+    disp(ageProbabilities(5,opposite+1));

@@ -16,8 +16,8 @@ age = []; %burg
 price = [];
 age(1,1:5) = 0;
 price(1,1:5) = 0;
-claims = [0,0,0,0,0;1,0,0,0,0;2,0,0,0,0;3,0,0,0,0;4,0,0,0,0;5,0,0,0,0;];
-for e = 1:5
+claims = [0,0,0,0,0;1,0,0,0,0;2,0,0,0,0;3,0,0,0,0;4,0,0,0,0;5,0,0,0,0;0,0,0,0,0;];
+for e = 1:4
     age(e,1) = maxAge/4 * e;
     price(e,1) = maxCarPrice/4 * e;
 end
@@ -56,19 +56,45 @@ for f = 1:height(trainingData)
 end
 
 % Calculate overall probability
-for a = 1:size(claims,1)
-    for b = 2:3
+for a = 1:size(claims,1)-1
+    totalCol = 0;
+        claims(7,2) = claims(7,2) + claims(a,2);
+        claims(7,3) = claims(7,3) + claims(a,3);
+	for b = 2:3
         claims(a,b) = claims(a,b)/claims(a,4);
-    end
+	end
     total = 0;
     for b = 1:size(claims,1)
         total = total + claims(b,4);
     end
     claims(a,5) = claims(a,4)/total;
+    disp
+end
+for a = 1:size(age,1)
+    for b = 2:3
+       age(a,b) = age(a,b)/age(a,4);
+    end
+    total = 0;
+    for b = 1:size(age,1)
+        total = total + age(b,4);
+    end
+    age(a,5) = age(a,4)/total;
+end
+for a = 1:size(price,1)
+    for b = 2:3
+       price(a,b) = price(a,b)/price(a,4);
+    end
+    total = 0;
+    for b = 1:size(price,1)
+        total = total + price(b,4);
+    end
+    price(a,5) = price(a,4)/total;
 end
 
+names = ["Range", "Fraud", "NoFraud", "Total", "OverallLikelyhood"];
+
 % Convert array to table and add headings
-yearsNo = array2table(claims,...
+yearsNoClaimsProbabilities = array2table(claims,...
     'VariableNames',names);
 ageProbabilities = array2table(age,...
     'VariableNames',names);
@@ -76,10 +102,20 @@ priceProbabilities = array2table(price,...
     'VariableNames',names);
 
 % Save tables to file which make up our model
-writetable(incidentProbabilities);
+writetable(yearsNoClaimsProbabilities);
 writetable(ageProbabilities);
 writetable(priceProbabilities);
 
+colours = ['r','g', 'b', 'c', 'm', 'y', 'k', 'm', 'y', 'k'];
+for z = 1:height(trainingData)
+        scatter3(trainingData(z,:).Age,trainingData(z,:).YearsNoClaims,trainingData(z,:).CarValue,10,colours(1,trainingData(z,:).FraudDetected + 1));
+    hold on;
+end
+
+title('All Data');
+xlabel('Age');
+ylabel('Years No Claims');
+zlabel('Car Value');
 
 %{
 
