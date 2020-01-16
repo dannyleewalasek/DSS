@@ -21,4 +21,7 @@ for a = 1:height(clusterPositions)
 end
 
 % Mapping Age against number of incidents
-bar(averages(1:height(clusterPositions), 2:2:4));
+h = bar(averages(1:height(clusterPositions), 2:2:4));
+l = cell(1,2);
+l{1}='	Age'; l{2}='Incidents';
+legend(h,l);

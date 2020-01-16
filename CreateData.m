@@ -13,7 +13,7 @@ while a < 900
     for b = a:c
         testData{b,:} = ["Name" + a, a , a , a*2,0];
         carSales{b,:} = ["Name" + a ,a * 100];
-        incidentData{b,:} = ["Name" + a, "IncidentDate"+a ,a];
+        incidentData{b,:} = ["Name" + a, "IncidentDate"+a ,a + randi(4)];
     end
     a = c;
 end
