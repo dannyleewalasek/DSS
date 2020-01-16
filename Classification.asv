@@ -17,7 +17,7 @@ Mdl = fitcnb(trainingData.Age,trainingData.FraudDetected,...
 isLabels1 = resubPredict(Mdl);
 ConfusionMat1 = confusionchart(trainingData.FraudDetected,isLabels1);
 
-input = [1,1,200];
+input = [1,100,200];
 
 label = predict(Mdl,input(1,2));
 disp(label);
@@ -35,20 +35,12 @@ currentProbability = 0;
             break;
         end
     end
-	for b = 1:size(priceProbabilities,1)
-        if input(1,1) <= priceProbabilities(b,1)
-            for c = 2:3
-                pclass(c-1) = pclass(c-1) * priceProbabilities(b,c);
-            end
-            break;
-        end
-    end
+	totalToDivideBy = totalToDivideBy + ageProbabilities(b,5);
 
     for d = 1:2
         if pclass(1,d) > pclass(1,highest)
             highest = d;
         end
     end
-    total = (0.187 * 0.5) / ageProbabilities(1,5) ;
-    disp(total);
+    total = pclass(1,2) / totalToDivideBy;
     disp("predicated class: "+ (highest - 1));

@@ -1,12 +1,25 @@
 %{
-This script is used to prepare data on burglarys and on postcode wealth
-fopr use in the model training stage.
+This script is used to prepare data on fraudulant claims and on customers
+account information for use in the model training stage.
 %}
-clear;
-% Load data
-carSales = readtable('carSales.txt');
-incidentData = readtable('incidentData.txt');
 
+% Load data
+claims = readtable('claims.txt');
+customerInformation = readtable('customerInformation.txt');
+
+% Join the data
+trainingData = innerjoin(claims,customerInformation,'Keys','Name');
+
+trainingData = unique(trainingData);
+
+trainingData.Name = [];
+
+trainingData = rmmissing(trainingData);
+
+writetable(trainingData);
+
+
+%{
 % Data Consolidation
 
 %count number incidents per name
@@ -47,3 +60,4 @@ trainingData.IncidentDate = [];
 
 % Save output
 writetable(trainingData);
+%}

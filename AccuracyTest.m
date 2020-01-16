@@ -8,112 +8,49 @@ clear;
 % Import all data needed and convert them to arrays to make them easier to
 % handle.
 testdata = readtable('testData.txt');
-clusterPositions = readtable('c.txt');
-incidentProbabilities = readtable('incidentProbabilities');
-incidentProbabilities = table2array(incidentProbabilities);
 ageProbabilities = readtable('ageProbabilities');
 ageProbabilities = table2array(ageProbabilities);
+yearsNoClaimsProbabilites = readtable('yearsNoClaimsProbabilities');
+yearsNoClaimsProbabilites = table2array(yearsNoClaimsProbabilites);
 priceProbabilities = readtable('priceProbabilities');
 priceProbabilities = table2array(priceProbabilities);
-burglaryOnly{:,3} = 0;
-a = 1;
-
 % Create confusion matrix TP | FP
 %                         FN | TN
 confusionMatrix = [0,0;
                     0,0];
-                
-%count number of
-while a < height(testdata)
-    count = 0;
-    for b = 1:height(testdata)
-        if isequal(testdata(a,1),testdata(b,1))
-            count = count + 1;
-            testdata{a,3} = count;
-        end
-    end
-    a = a + count+1;
-    count = 0;
-end
 
 testdata = unique(testdata);
-testdata(testdata.NumberOfIncidents == 0, :) = [];
-
-% Check each item in the test data to see which class it belongs to by
-% checking them against the K cluster positions using euclidean distance
-
-% NEED TO MAKE 3D.
-for c = 1:height(testdata)
-    minDistance = 99999999999999999999999999;
-    for d = 1:height(clusterPositions)
-        if sqrt((clusterPositions{d,1} - testdata(c,:).NumberOfIncidents).^2 + (clusterPositions{d,2} - testdata(c,:).Age).^2) < minDistance
-            testdata(c,:).ExpectedClass = d;
-            minDistance = sqrt((clusterPositions{d,1} - testdata(c,:).NumberOfIncidents).^2 + (clusterPositions{d,2} - testdata(c,:).Age).^2);
-        end
-    end
-end
-
-for c = 1:height(testdata)
-           pos = [testdata(c,2),testdata(c,3),testdata(c,4)];
-           highest = 0;
-           distance = 9999999999;
-   for d = 1:height(clusterPositions)
-       centralPos = clusterPositions(d,:);
-       distanceNew = sqrt(sum((table2array(pos) - table2array(centralPos)).^2, 2));
-       if distanceNew <= distance
-           highest = d;
-           distance = distanceNew;
-       end
-   end
-   testdata(c,:).ExpectedClass = highest;
-end
 
 % Accuracy test using confusion matrix
 incorrect = 0;
 correct = 0;
-class = 1;
 currentProbability = 0;
 
 for a = 1:height(testdata)
     highest = 1;
-    pclass = [0,0,0,0];
-	for b = 1:height(clusterPositions)
-        if testdata(a,:).NumberOfIncidents <= incidentProbabilities(b,1)
-            for c = 2:height(clusterPositions) + 1
-                pclass(c-1) = incidentProbabilities(b,c);
-            end
-            break;
-        end
-	end
-	for b = 1:height(clusterPositions)
+    pclass = [0,0];
+	for b = 1:size(ageProbabilities,1)
         if testdata(a,:).Age <= ageProbabilities(b,1)
-            for c = 2:height(clusterPositions) + 1
-                pclass(c-1) = pclass(c-1) + ageProbabilities(b,c);
-            end
-            break;
-        end
-    end
-    for b = 1:height(clusterPositions)
-        if testdata(a,:).CarPrice <= priceProbabilities(b,1)
-            for c = 2:height(clusterPositions) + 1
-                pclass(c-1) = pclass(c-1) + priceProbabilities(b,c);
+            for c = 1:2
+                pclass(c) = ageProbabilities(b,c);
             end
             break;
         end
 	end
-    for d = 1:height(clusterPositions)
+
+    for d = 1:2
         if pclass(1,d) > pclass(1,highest)
             highest = d;
         end
     end
-	if testdata(a,:).ExpectedClass == highest
+	if testdata(a,:).ExpectedClass == highest - 1
         correct = correct + 1;
         confusionMatrix(1,1) = confusionMatrix(1,1) + 1; % Correct positives
-        confusionMatrix(2,2) = confusionMatrix(2,2) + (height(clusterPositions) - 1); % correct negatives   
+        confusionMatrix(2,2) = confusionMatrix(2,2) + 1; % correct negatives   
 	else
         incorrect = incorrect + 1;
         confusionMatrix(1,2) = confusionMatrix(1,2) + 1; % False positives
-        confusionMatrix(2,1) = confusionMatrix(2,1) + (height(clusterPositions) - 1); % False negatives
+        confusionMatrix(2,1) = confusionMatrix(2,1) + 1; % False negatives
     end
 end
 
