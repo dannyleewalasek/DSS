@@ -16,10 +16,11 @@ age = []; %burg
 price = [];
 age(1:5,1:5) = 0;
 price(1:5,1:5) = 0;
-claims = [0,0,0,0,0;1,0,0,0,0;2,0,0,0,0;3,0,0,0,0;4,0,0,0,0;5,0,0,0,0;0,0,0,0,0;];
+claims(1:5,1:5) = 0;
 for e = 1:4
     age(e,1) = maxAge/4 * e;
     price(e,1) = maxCarPrice/4 * e;
+    claims(e,1) = maxYearsNoClaims/4 * e;
 end
 
 
@@ -54,59 +55,57 @@ for f = 1:height(trainingData)
     end
 end
 
+% CLAIMS..............
+for f = 1:height(trainingData)
+    for g = 1:4
+        if (trainingData(f,:).YearsNoClaims <= claims(g,1))
+            if trainingData(f,:).FraudDetected == 0
+                claims(g,3) = claims(g,3) + 1;
+                claims(5,3) = claims(5,3)+1;
+            else
+                claims(g,2) = claims(g,2) + 1;
+                claims(5,2) = claims(5,2)+1;
+            end
+            claims(g,4) = claims(g,4)+1; 
+        end
+    end
+end
+
 
 age(5,4) = age(5,3) + age(5,2);
-
-disp(age);
-
 for a = 1:4
     age(a,5) = age(a,4)/age(5,4);
 end
-
-% calculate percentage of inner cells
+% calculate percentage of inner cells AGE
 for a = 1:size(age,1)-1
     for b = 2:3
         age(a,b) = age(a,b)/age(5,b);
     end
 end
 
+price(5,4) = price(5,3) + price(5,2);
+for a = 1:4
+    price(a,5) = price(a,4)/price(5,4);
+end
+% calculate percentage of inner cells PRICE
+for a = 1:size(price,1)-1
+    for b = 2:3
+        price(a,b) = price(a,b)/price(5,b);
+    end
+end
 
-%{
-% Calculate overall probability
-for a = 1:size(claims,1)-1
-    totalCol = 0;
-        claims(7,2) = claims(7,2) + claims(a,2);
-        claims(7,3) = claims(7,3) + claims(a,3);
-	for b = 2:3
-        claims(a,b) = claims(a,b)/claims(a,4);
-	end
-    total = 0;
-    for b = 1:size(claims,1)
-        total = total + claims(b,4);
-    end
-    claims(a,5) = claims(a,4)/total;
+claims(5,4) = claims(5,3) + claims(5,2);
+for a = 1:4
+    claims(a,5) = claims(a,4)/claims(5,4);
 end
-for a = 1:size(age,1)
+% calculate percentage of inner cells CLAIMS
+for a = 1:size(age,1)-1
     for b = 2:3
-       age(a,b) = age(a,b)/age(a,4);
+        claims(a,b) = claims(a,b)/claims(5,b);
     end
-    total = 0;
-    for b = 1:size(age,1)
-        total = total + age(b,4);
-    end
-    age(a,5) = age(a,4)/total;
 end
-for a = 1:size(price,1)
-    for b = 2:3
-       price(a,b) = price(a,b)/price(a,4);
-    end
-    total = 0;
-    for b = 1:size(price,1)
-        total = total + price(b,4);
-    end
-    price(a,5) = price(a,4)/total;
-end
-%}
+
+
 names = ["Range", "Fraud", "NoFraud", "Total", "OverallLikelyhood"];
 
 % Convert array to table and add headings
@@ -132,64 +131,3 @@ title('All Data');
 xlabel('Age');
 ylabel('Years No Claims');
 zlabel('Car Value');
-
-%{
-
-% Save the training data
-writetable(trainingData);
-
-% Calculating probabilities
-for h = 1:numK
-    for i = 2:numK+1
-        age(h,i) = age(h,i)/ age(h,numK+2);
-        incidents(h,i) = incidents(h,i)/ incidents(h,numK+2);
-        price(h,i) = price(h,i)/ price(h,numK+2);
-    end
-end
-
-% Replace NAN's with equal value
-for n = 1:numK
-    for o = 2:numK+1
-        if isnan(age(n,o))
-            age(n,o) = 1/numK;
-        end
-        if isnan(incidents(n,o))
-            incidents(n,o) = 1/numK;
-        end
-        if isnan(price(n,o))
-            price(n,o) = 1/numK;
-        end
-    end
-end
-
-% Determine names for headings
-names{1,1} = 'Range';
-for a = 2:numK + 1
-    names{1,a} = strcat('class ', num2str(a-1));
-end
-names{1,numK + 2} = 'total';
-
-
-
-% Display results
-disp("----------- Incident probabilities ----------- ");
-disp(incidentProbabilities);
-disp("----------- Age probabilities ----------- ");
-disp(ageProbabilities);
-disp("----------- Car Price probabilities ----------- ");
-disp(priceProbabilities);
-
-% Plot each data point colour coded by class
-% Fix to allow for variable K
-
-colours = ['r','g', 'b', 'c', 'm', 'y', 'k', 'm', 'y', 'k'];
-for z = 1:height(trainingData)
-        scatter3(trainingData(z,:).Age,trainingData(z,:).NumberOfIncidents,trainingData(z,:).CarPrice,10,colours(1,trainingData(z,:).class));
-    hold on;
-end
-
-title('All Data');
-xlabel('X');
-ylabel('Y');
-zlabel('Z');
-%}

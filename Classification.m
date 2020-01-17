@@ -5,17 +5,14 @@ classes defined dureing the model stage.
 
 ageProbabilities = readtable('ageProbabilities');
 ageProbabilities = table2array(ageProbabilities);
-yearsNoClaimsProbabilites = readtable('yearsNoClaimsProbabilities');
-yearsNoClaimsProbabilites = table2array(yearsNoClaimsProbabilites);
+yearsNoClaimsProbabilities = readtable('yearsNoClaimsProbabilities');
+yearsNoClaimsProbabilities = table2array(yearsNoClaimsProbabilities);
 priceProbabilities = readtable('priceProbabilities');
 priceProbabilities = table2array(priceProbabilities);
 
 trainingData = readtable('trainingData');
 
-input = [516 ,500,200];
-
-label = predict(Mdl,input(1,2));
-disp(label);
+input = [500 ,500,5];
 
 currentProbability = 0;
 opposite = 1;
@@ -45,17 +42,28 @@ opposite = 1;
             break;
         end
     end
+    
+	for b = 1:size(yearsNoClaimsProbabilities,1)
+        if input(1,3) <= yearsNoClaimsProbabilities(b,1)
+            for c = 2:3
+                pclass(c-1) = pclass(c-1) + yearsNoClaimsProbabilities(b,c) * (yearsNoClaimsProbabilities(5,c) / yearsNoClaimsProbabilities(5,4));
+                disp(c + ": " + yearsNoClaimsProbabilities(b,c) / yearsNoClaimsProbabilities(5,c) + " * " );
+            end
+            bottomHalf = bottomHalf + yearsNoClaimsProbabilities(b,5);
+            break;
+        end
+    end
 
     for d = 1:2
         if pclass(1,d) > pclass(1,highest)
             highest = d;
-            if highest == 1
-                oppposite = 2;
-            else
-                opposite = 1;
-            end
         end
     end
     topHalf = pclass(1,highest);
     total = topHalf/bottomHalf;
-    disp("There is a "+ total * 100 + "% chance of being fraudulant or not fraudulant");
+    if highest == 1
+        outcome = "Fraudulant";
+    else
+        outcome = "Not Fraudulant";
+    end
+    disp("There is a "+ total * 100 + "% chance of being " + outcome);
