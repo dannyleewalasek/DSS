@@ -28,7 +28,7 @@ end
 for f = 1:height(trainingData)
     for g = 1:4
         if (trainingData(f,:).Age <= age(g,1))
-            if trainingData(f,:).FraudDetected == 0
+            if trainingData(f,:).FraudDetected == 1
                 age(g,3) = age(g,3) + 1;
                 age(5,3) = age(5,3)+1;
             else
@@ -43,7 +43,7 @@ end
 for f = 1:height(trainingData)
     for g = 1:4
         if (trainingData(f,:).CarValue <= price(g,1))
-            if trainingData(f,:).FraudDetected == 0
+            if trainingData(f,:).FraudDetected == 1
                 price(g,3) = price(g,3) + 1;
                 price(5,3) = price(5,3)+1;
             else
@@ -59,7 +59,7 @@ end
 for f = 1:height(trainingData)
     for g = 1:4
         if (trainingData(f,:).YearsNoClaims <= claims(g,1))
-            if trainingData(f,:).FraudDetected == 0
+            if trainingData(f,:).FraudDetected == 1
                 claims(g,3) = claims(g,3) + 1;
                 claims(5,3) = claims(5,3)+1;
             else
@@ -73,35 +73,19 @@ end
 
 
 age(5,4) = age(5,3) + age(5,2);
+price(5,4) = price(5,3) + price(5,2);
+claims(5,4) = claims(5,3) + claims(5,2);
 for a = 1:4
     age(a,5) = age(a,4)/age(5,4);
+    price(a,5) = price(a,4)/price(5,4);
+    claims(a,5) = claims(a,4)/claims(5,4);
 end
 % calculate percentage of inner cells AGE
 for a = 1:size(age,1)-1
     for b = 2:3
         age(a,b) = age(a,b)/age(5,b);
-    end
-end
-
-price(5,4) = price(5,3) + price(5,2);
-for a = 1:4
-    price(a,5) = price(a,4)/price(5,4);
-end
-% calculate percentage of inner cells PRICE
-for a = 1:size(price,1)-1
-    for b = 2:3
-        price(a,b) = price(a,b)/price(5,b);
-    end
-end
-
-claims(5,4) = claims(5,3) + claims(5,2);
-for a = 1:4
-    claims(a,5) = claims(a,4)/claims(5,4);
-end
-% calculate percentage of inner cells CLAIMS
-for a = 1:size(age,1)-1
-    for b = 2:3
         claims(a,b) = claims(a,b)/claims(5,b);
+        price(a,b) = price(a,b)/price(5,b);
     end
 end
 

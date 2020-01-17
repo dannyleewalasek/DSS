@@ -1,4 +1,4 @@
-Name,CarPrice
+ame,CarPrice
 Danny,1000
 Name2,200
 Name2,200
@@ -22,8 +22,7 @@ Name16,1600
 Name16,1600
 Name16,1600
 Name16,1600
-Name16,1600
-Name16,1600
+Name16,1600Name16,1600
 Name16,1600
 Name16,1600
 Name16,1600
