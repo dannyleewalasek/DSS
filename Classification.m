@@ -11,8 +11,8 @@ priceProbabilities = readtable('priceProbabilities');
 priceProbabilities = table2array(priceProbabilities);
 
 trainingData = readtable('trainingData');
-
-input = [1 ,512,50];
+% age | price | years
+input = [20,3200,20];
 
     highest = 1;
     pclass = [0,0];
@@ -22,6 +22,9 @@ input = [1 ,512,50];
         if input(1,1) <= ageProbabilities(b,1)
             for c = 2:3
                 pclass(c-1) = ageProbabilities(b,c) * (ageProbabilities(5,c) / ageProbabilities(5,4));
+                disp(ageProbabilities(b,c) * (ageProbabilities(5,c) / ageProbabilities(5,4)));
+                disp("b: " + b);
+                disp("c: " + c);
             end
             bottomHalf = bottomHalf + ageProbabilities(b,5);
             break;

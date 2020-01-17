@@ -1,28 +1,33 @@
 %{
 This script is used to generate training and testing data.
 %}
+
+% Create tables used to store generated data.
 testData = table("Danny", 1,1,1,1);
 testData.Properties.VariableNames = {'Name','Age','YearsNoClaims','CarPrice','ExpectedClass'};
 claims = table("Danny", 0);
 claims.Properties.VariableNames = {'Name','FraudDetected'};
 customerInformation = table("Danny", 1, 1, 1);
 customerInformation.Properties.VariableNames = {'Name','CarValue','Age','YearsNoClaims'};
-a = 2;
-while a < 900
-    c = a * 2;
-    for b = a:c
-        if (a > 400)
-            customerInformation{b,:} = ["Name" + b, a ,a ,a];
-            claims{b,:} = ["Name" + b ,0];
-            testData{b,:} = ["Name" + b, a  , a,a,0];
+
+% Fill tables with data, data employs some randomness but also inserts a
+% level of pattern into the data to help check the system correctly detects
+% and uses this information.
+for a = 1:100
+    for b = 1:randi(10)
+        if a < 50
+            customerInformation{height(customerInformation)+1,:} = ["Name" + a,  a ,a ,a];
+            claims{height(claims)+1,:} = ["Name" + a ,0];
+            testData{height(testData)+1,:} = ["Name" + a,a  , a,a,0];
         else
-            customerInformation{b,:} = ["Name" + b, a ,a ,a];
-        	claims{b,:} = ["Name" + b ,1];
-        	testData{b,:} = ["Name" + b, a  , a , a,1];
+            customerInformation{height(customerInformation)+1,:} = ["Name" + a, a ,a ,a];
+            claims{height(claims)+1,:} = ["Name" + a ,1];
+            testData{height(testData)+1,:} = ["Name" + a, a  , a,a,1];
         end
     end
-    a = c;
 end
+
+% Finally write the tables out to file for later use.
 writetable(customerInformation);
 writetable(claims);
 writetable(testData);

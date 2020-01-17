@@ -8,11 +8,11 @@ trainingData = readtable('trainingData');
 
 % -----------------Probability calculation -------------------
 
-% Set ranges in new array to be used for probabilities
+% Set ranges in new array to be used for probabilities.
 maxYearsNoClaims = max(trainingData.YearsNoClaims);
 maxAge = max(trainingData.Age);
 maxCarPrice = max(trainingData.CarValue);
-age = []; %burg
+age = [];
 price = [];
 age(1:5,1:5) = 0;
 price(1:5,1:5) = 0;
@@ -24,7 +24,7 @@ for e = 1:4
 end
 
 
-% Calcualte probabilites
+% Sum up total number of fraud and no fraud outcomes for each pair.
 for f = 1:height(trainingData)
     for g = 1:4
         if (trainingData(f,:).Age <= age(g,1))
@@ -37,11 +37,6 @@ for f = 1:height(trainingData)
             end
             age(g,4) = age(g,4)+1; 
         end
-    end
-end
-
-for f = 1:height(trainingData)
-    for g = 1:4
         if (trainingData(f,:).CarValue <= price(g,1))
             if trainingData(f,:).FraudDetected == 1
                 price(g,3) = price(g,3) + 1;
@@ -52,12 +47,6 @@ for f = 1:height(trainingData)
             end
             price(g,4) = price(g,4)+1; 
         end
-    end
-end
-
-% CLAIMS..............
-for f = 1:height(trainingData)
-    for g = 1:4
         if (trainingData(f,:).YearsNoClaims <= claims(g,1))
             if trainingData(f,:).FraudDetected == 1
                 claims(g,3) = claims(g,3) + 1;
@@ -71,7 +60,7 @@ for f = 1:height(trainingData)
     end
 end
 
-
+% Calculate total and probabilites for each row and column.
 age(5,4) = age(5,3) + age(5,2);
 price(5,4) = price(5,3) + price(5,2);
 claims(5,4) = claims(5,3) + claims(5,2);
@@ -80,7 +69,8 @@ for a = 1:4
     price(a,5) = price(a,4)/price(5,4);
     claims(a,5) = claims(a,4)/claims(5,4);
 end
-% calculate percentage of inner cells AGE
+
+% calculate percentages for each pair.
 for a = 1:size(age,1)-1
     for b = 2:3
         age(a,b) = age(a,b)/age(5,b);
@@ -89,10 +79,7 @@ for a = 1:size(age,1)-1
     end
 end
 
-
-names = ["Range", "Fraud", "NoFraud", "Total", "OverallLikelyhood"];
-
-% Convert array to table and add headings
+% Convert array to table and add headings.
 yearsNoClaimsProbabilities = array2table(claims,...
     'VariableNames',names);
 ageProbabilities = array2table(age,...
@@ -100,18 +87,7 @@ ageProbabilities = array2table(age,...
 priceProbabilities = array2table(price,...
     'VariableNames',names);
 
-% Save tables to file which make up our model
+% Save tables to file which make up our model.
 writetable(yearsNoClaimsProbabilities);
 writetable(ageProbabilities);
 writetable(priceProbabilities);
-
-colours = ['r','g', 'b', 'c', 'm', 'y', 'k', 'm', 'y', 'k'];
-for z = 1:height(trainingData)
-        scatter3(trainingData(z,:).Age,trainingData(z,:).YearsNoClaims,trainingData(z,:).CarValue,10,colours(1,trainingData(z,:).FraudDetected + 1));
-    hold on;
-end
-
-title('All Data');
-xlabel('Age');
-ylabel('Years No Claims');
-zlabel('Car Value');

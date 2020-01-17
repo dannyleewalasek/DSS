@@ -24,45 +24,57 @@ testdata = unique(testdata);
 % Accuracy test using confusion matrix
 incorrect = 0;
 correct = 0;
+currentProbability = 0;
+
 for a = 1:height(testdata)
 highest = 1;
     pclass = [0,0];
-	for b = 1:size(ageProbabilities,1)
-        if testdata(a,:).Age <= ageProbabilities(b,1)
-            for c = 2:3
-                pclass(c-1) = ageProbabilities(b,c);
-            end
-            break;
-        end
-    end
+    bottomHalf = 0;
     
-	for b = 1:size(priceProbabilities,1)
-        if testdata(a,:).CarPrice <= priceProbabilities(b,1)
-            for c = 2:3
-                pclass(c-1) = pclass(c-1) + priceProbabilities(b,c);
-            end
-            break;
+% Calculate the probability for each classicaition for the Age range of
+% the input.
+for b = 1:size(ageProbabilities,1)
+	if testdata(a,:).Age <= ageProbabilities(b,1)
+        for c = 2:3
+            pclass(c-1) = ageProbabilities(b,c) * (ageProbabilities(5,c) / ageProbabilities(5,4));
         end
-    end
+        bottomHalf = bottomHalf + ageProbabilities(b,5);
+        break;
+	end
+end
     
-	for b = 1:size(yearsNoClaimsProbabilities,1)
-        if testdata(a,:).YearsNoClaims <= yearsNoClaimsProbabilities(b,1)
-            for c = 2:3
-                pclass(c-1) = pclass(c-1) + yearsNoClaimsProbabilities(b,c);
-            end
-            break;
+for b = 1:size(priceProbabilities,1)
+	if testdata(a,:).CarPrice <= priceProbabilities(b,1)
+        for c = 2:3
+            pclass(c-1) = pclass(c-1) + priceProbabilities(b,c) * (priceProbabilities(5,c) / priceProbabilities(5,4));
         end
+        bottomHalf = bottomHalf + priceProbabilities(b,5);
+        break;
     end
+end
+    
+for b = 1:size(yearsNoClaimsProbabilities,1)
+	if testdata(a,:).YearsNoClaims <= yearsNoClaimsProbabilities(b,1)
+        for c = 2:3
+            pclass(c-1) = pclass(c-1) + yearsNoClaimsProbabilities(b,c) * (yearsNoClaimsProbabilities(5,c) / yearsNoClaimsProbabilities(5,4));
+        end
+        bottomHalf = bottomHalf + yearsNoClaimsProbabilities(b,5);
+        break;
+	end
+end
+    
+for d = 1:2
+	pclass(1,d) =  pclass(1,d) / bottomHalf;
+end
 
-    for d = 1:2
-        if pclass(1,d) > pclass(1,highest)
-            highest = d;
-        end
-    end
-    
-	if testdata(a,:).ExpectedClass == highest - 1
-        correct = correct + 1;
-        confusionMatrix(1,1) = confusionMatrix(1,1) + 1; % Correct positives
+for d = 1:2
+	if pclass(1,d) > pclass(1,highest)
+        highest = d;
+	end
+end
+if testdata(a,:).ExpectedClass == highest - 1
+	correct = correct + 1;
+	confusionMatrix(1,1) = confusionMatrix(1,1) + 1; % Correct positives
         confusionMatrix(2,2) = confusionMatrix(2,2) + 1; % correct negatives   
 	else
         incorrect = incorrect + 1;
@@ -82,4 +94,4 @@ uit.ColumnEditable = true;
 uit.RowName = {'+','-'};
 
 % Display model accuracy
-disp("The accuracy of the model has been calculated at: " + matrixAccuracy);
+disp("The accuracy of the model has been calculated at: " + matrixAccuracy * 100 + "%");

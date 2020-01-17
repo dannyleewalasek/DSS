@@ -27,10 +27,12 @@ correct = 0;
 currentProbability = 0;
 
 for a = 1:height(testdata)
-highest = 1;
-    pclass = [0,0];
-    bottomHalf = 0;
-	for b = 1:size(ageProbabilities,1)
+    highest = 1;
+	pclass = [0,0];
+	bottomHalf = 0;
+    
+    % Calculate the probability for each classicaition for the Age range of the input.
+    for b = 1:size(ageProbabilities,1)
         if testdata(a,:).Age <= ageProbabilities(b,1)
             for c = 2:3
                 pclass(c-1) = ageProbabilities(b,c) * (ageProbabilities(5,c) / ageProbabilities(5,4));
@@ -40,7 +42,8 @@ highest = 1;
         end
     end
     
-	for b = 1:size(priceProbabilities,1)
+    % Calculate the probability for each classicaition for the price range of the input.
+    for b = 1:size(priceProbabilities,1)
         if testdata(a,:).CarPrice <= priceProbabilities(b,1)
             for c = 2:3
                 pclass(c-1) = pclass(c-1) + priceProbabilities(b,c) * (priceProbabilities(5,c) / priceProbabilities(5,4));
@@ -49,8 +52,9 @@ highest = 1;
             break;
         end
     end
-    
-	for b = 1:size(yearsNoClaimsProbabilities,1)
+
+    % Calculate the probability for each classicaition for the years no claims range of the input.
+    for b = 1:size(yearsNoClaimsProbabilities,1)
         if testdata(a,:).YearsNoClaims <= yearsNoClaimsProbabilities(b,1)
             for c = 2:3
                 pclass(c-1) = pclass(c-1) + yearsNoClaimsProbabilities(b,c) * (yearsNoClaimsProbabilities(5,c) / yearsNoClaimsProbabilities(5,4));
@@ -59,9 +63,11 @@ highest = 1;
             break;
         end
     end
-    
+
+    % Final part of Naive Bayes formula to give a percentage to each
+    % possible outcome.
     for d = 1:2
-       pclass(1,d) =  pclass(1,d) / bottomHalf;
+        pclass(1,d) =  pclass(1,d) / bottomHalf;
     end
 
     for d = 1:2
@@ -69,20 +75,24 @@ highest = 1;
             highest = d;
         end
     end
-    disp(highest);
-	if testdata(a,:).ExpectedClass == highest - 1
+    % Update appropriate fields in the confusion matrix.
+    if testdata(a,:).ExpectedClass == highest - 1
         correct = correct + 1;
         confusionMatrix(1,1) = confusionMatrix(1,1) + 1; % Correct positives
         confusionMatrix(2,2) = confusionMatrix(2,2) + 1; % correct negatives   
-	else
+    else
         incorrect = incorrect + 1;
         confusionMatrix(1,2) = confusionMatrix(1,2) + 1; % False positives
         confusionMatrix(2,1) = confusionMatrix(2,1) + 1; % False negatives
     end
 end
 
+%Save confusion matrix for later use in visual script.
+writematrix(confusionMatrix);
+
 % Calculate model accuracy
 matrixAccuracy =(confusionMatrix(1,1) + confusionMatrix(2,2)) / (confusionMatrix(1,1) + confusionMatrix(2,2) + confusionMatrix(1,2) + confusionMatrix(2,1));
+
 
 % Display confusion matrix
 f = figure;
