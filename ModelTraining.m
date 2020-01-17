@@ -26,54 +26,50 @@ end
 % Calcualte probabilites
 for f = 1:height(trainingData)
     for g = 1:4
-        if (trainingData(f,:).CarValue <= price(g,1))
-            if trainingData(f,:).FraudDetected == 0
-                price(g,3) = price(g,3) + 1;
-            else
-                price(g,2) = price(g,2) + 1;
-            end
-            price(g,4) = price(g,4)+1; 
-        end
         if (trainingData(f,:).Age <= age(g,1))
             if trainingData(f,:).FraudDetected == 0
                 age(g,3) = age(g,3) + 1;
+                age(5,3) = age(5,3)+1;
             else
                 age(g,2) = age(g,2) + 1;
+                age(5,2) = age(5,2)+1;
             end
             age(g,4) = age(g,4)+1; 
         end
     end
-    for g = 1:6
-        if (trainingData(f,:).YearsNoClaims <= claims(g,1))
+end
+
+for f = 1:height(trainingData)
+    for g = 1:4
+        if (trainingData(f,:).CarValue <= price(g,1))
             if trainingData(f,:).FraudDetected == 0
-                claims(g,3) = claims(g,3) + 1;
+                price(g,3) = price(g,3) + 1;
+                price(5,3) = price(5,3)+1;
             else
-                claims(g,2) = claims(g,2) + 1;
+                price(g,2) = price(g,2) + 1;
+                price(5,2) = price(5,2)+1;
             end
-            claims(g,4) = claims(g,4)+1; 
+            price(g,4) = price(g,4)+1; 
         end
     end
 end
 
-disp(claims);
 
-for a = 1:size(claims,1)-1
-   for b = 2:3
-      claims(7,b) = claims(7,b) + claims(a,b);
-   end
+age(5,4) = age(5,3) + age(5,2);
+
+disp(age);
+
+for a = 1:4
+    age(a,5) = age(a,4)/age(5,4);
 end
 
+% calculate percentage of inner cells
 for a = 1:size(age,1)-1
-   for b = 2:3
-      age(5,b) = age(5,b) + age(a,b);
-   end
+    for b = 2:3
+        age(a,b) = age(a,b)/age(5,b);
+    end
 end
 
-for a = 1:size(price,1)-1
-   for b = 2:3
-      price(5,b) = price(5,b) + price(a,b);
-   end
-end
 
 %{
 % Calculate overall probability

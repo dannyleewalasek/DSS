@@ -13,7 +13,7 @@ while a < 900
     for b = a:c
 
         customerInformation{b,:} = ["Name" + b, a ,a + randi(4),randi([0,5])];
-        if (a > 40)
+        if (a > 400)
             claims{b,:} = ["Name" + b ,0];
             testData{b,:} = ["Name" + b, a , a , a*2,0];
         else

@@ -11,13 +11,8 @@ priceProbabilities = readtable('priceProbabilities');
 priceProbabilities = table2array(priceProbabilities);
 
 trainingData = readtable('trainingData');
-Mdl = fitcnb(trainingData.Age,trainingData.FraudDetected,...
-    'ClassNames',[1,0]);
 
-isLabels1 = resubPredict(Mdl);
-ConfusionMat1 = confusionchart(trainingData.FraudDetected,isLabels1);
-
-input = [1,1,200];
+input = [516 ,500,200];
 
 label = predict(Mdl,input(1,2));
 disp(label);
@@ -25,25 +20,28 @@ disp(label);
 currentProbability = 0;
 opposite = 1;
 
-    highest = 2;
+    highest = 1;
     pclass = [0,0];
     totalToDivideBy = 0;
+    bottomHalf = 0;
 	for b = 1:size(ageProbabilities,1)
         if input(1,1) <= ageProbabilities(b,1)
             for c = 2:3
-                pclass(c-1) = ageProbabilities(b,c) / ageProbabilities(5,c);
+                pclass(c-1) = ageProbabilities(b,c) * (ageProbabilities(5,c) / ageProbabilities(5,4));
                 disp(c + ": " + ageProbabilities(b,c) / ageProbabilities(5,c) + " * " );
             end
+            bottomHalf = bottomHalf + ageProbabilities(b,5);
             break;
         end
     end
-	for e = 1:size(priceProbabilities,1)
-        if input(1,1) <= priceProbabilities(e,1)
+    
+	for b = 1:size(priceProbabilities,1)
+        if input(1,2) <= ageProbabilities(b,1)
             for c = 2:3
-                pclass(c-1) = priceProbabilities(b,c) / priceProbabilities(5,c);
+                pclass(c-1) = pclass(c-1) + priceProbabilities(b,c) * (priceProbabilities(5,c) / priceProbabilities(5,4));
                 disp(c + ": " + priceProbabilities(b,c) / priceProbabilities(5,c) + " * " );
-               % pclass(c-1) = pclass(c-1) * priceProbabilities(e,c) / priceProbabilities(5,c);
             end
+            bottomHalf = bottomHalf + priceProbabilities(b,5);
             break;
         end
     end
@@ -58,9 +56,6 @@ opposite = 1;
             end
         end
     end
-    topHalf = pclass(1,highest) * (ageProbabilities(b,highest+1)/ ageProbabilities(5,highest+1)) ;
-    bottomHalf = (ageProbabilities(5,highest+1) / ageProbabilities(5,opposite+1));
+    topHalf = pclass(1,highest);
     total = topHalf/bottomHalf;
-    disp(total);
-    disp("predicated class: "+ (highest - 1));
-    disp(ageProbabilities(5,opposite+1));
+    disp("There is a "+ total * 100 + "% chance of being fraudulant or not fraudulant");
