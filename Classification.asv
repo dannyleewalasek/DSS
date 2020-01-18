@@ -3,14 +3,14 @@ This script is used to classify new inputs into the system into one of the
 classes defined dureing the model stage.
 %}
 
-% Load in all probability tables and convert to arrays for easier
-% manipulation.
 ageProbabilities = readtable('ageProbabilities');
 ageProbabilities = table2array(ageProbabilities);
 yearsNoClaimsProbabilities = readtable('yearsNoClaimsProbabilities');
 yearsNoClaimsProbabilities = table2array(yearsNoClaimsProbabilities);
 priceProbabilities = readtable('priceProbabilities');
 priceProbabilities = table2array(priceProbabilities);
+
+trainingData = readtable('trainingData');
 
 % This is the input to the system to be analysed for probability of fraud.
 input = [55,45,50];% age | price | years
@@ -63,11 +63,9 @@ for d = 1:2
     end
 end
 
-% Calculate final percentage chance of being a specific class.
+% Calculate 
 topHalf = pclass(1,highest);
 total = topHalf/bottomHalf;
-
-% Display the results to the user.
 if highest == 2
     outcome = "Fraudulant";
 else

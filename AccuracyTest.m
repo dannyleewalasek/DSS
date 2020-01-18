@@ -76,15 +76,20 @@ for a = 1:height(testdata)
         end
     end
     % Update appropriate fields in the confusion matrix.
-    if testdata(a,:).ExpectedClass == highest - 1
-        correct = correct + 1;
-        confusionMatrix(1,1) = confusionMatrix(1,1) + 1; % Correct positives
-        confusionMatrix(2,2) = confusionMatrix(2,2) + 1; % correct negatives   
-    else
-        incorrect = incorrect + 1;
-        confusionMatrix(1,2) = confusionMatrix(1,2) + 1; % False positives
-        confusionMatrix(2,1) = confusionMatrix(2,1) + 1; % False negatives
+    if highest -1 == 0
+        if testdata(a,:).ExpectedClass == 0
+            confusionMatrix(2,2) = confusionMatrix(2,2) + 1;
+        else
+            confusionMatrix(1,2) = confusionMatrix(1,2) + 1;
+        end            
     end
+        if highest -1 == 1
+        if testdata(a,:).ExpectedClass == 1
+            confusionMatrix(1,1) = confusionMatrix(1,1) + 1;
+        else
+            confusionMatrix(2,1) = confusionMatrix(2,1) + 1;
+        end            
+        end
 end
 
 %Save confusion matrix for later use in visual script.

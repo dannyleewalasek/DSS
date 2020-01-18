@@ -29,6 +29,6 @@ for a = 1:20
 end
 colours = ['r','g'];
 for a = 1:20
-    scatter3(rands(a,1),rands(a,2),rands(a,3),10,colours(randi([1,2])));
+    scatter3(rands(a,1),rands(a,2),rands(a,3),10,colours(randi([])));
     hold on;
 end
