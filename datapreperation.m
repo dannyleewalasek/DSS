@@ -21,14 +21,3 @@ trainingData = rmmissing(trainingData);
 
 % Write the table out to file.
 writetable(trainingData);
-rands = [0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;0,0,0;];
-for a = 1:20
-    for b = 1:3
-       rands(a,b) =  randi(100);
-    end
-end
-colours = ['r','g'];
-for a = 1:20
-    scatter3(rands(a,1),rands(a,2),rands(a,3),10,colours(randi([1,2])));
-    hold on;
-end

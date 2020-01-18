@@ -6,8 +6,6 @@ clustering points.
 clear;
 trainingData = readtable('trainingData');
 
-% -----------------Probability calculation -------------------
-
 % Set ranges in new array to be used for probabilities.
 maxYearsNoClaims = max(trainingData.YearsNoClaims);
 maxAge = max(trainingData.Age);
@@ -22,7 +20,6 @@ for e = 1:4
     price(e,1) = maxCarPrice/4 * e;
     claims(e,1) = maxYearsNoClaims/4 * e;
 end
-
 
 % Sum up total number of fraud and no fraud outcomes for each pair.
 for f = 1:height(trainingData)

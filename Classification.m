@@ -13,11 +13,11 @@ priceProbabilities = readtable('priceProbabilities');
 priceProbabilities = table2array(priceProbabilities);
 
 % This is the input to the system to be analysed for probability of fraud.
-input = [55,45,50];% age | price | years
+input = [55,45,50]; %age, price, years.
 
-pclass = [0,0];%Used for naive Bayes calculations.
-totalToDivideBy = 0;%Used for naive Bayes calculations.
-bottomHalf = 0;
+pclass = [0,0]; %Used for naive Bayes calculations.
+totalToDivideBy = 0; %Used for naive Bayes calculations.
+bottomHalf = 0; %Used for naive Bayes calculations.
 
 % Calculate age probabilities.
 for b = 1:size(ageProbabilities,1)

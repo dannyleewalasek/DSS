@@ -20,13 +20,13 @@ NoFraud = [0,0,0]; % Age, Year no claims, Value of car.
 
 % Calculate mean values for age, years no claims and value of car.
 FraudRows = table2array(trainingData(any(trainingData.FraudDetected == 1,2),:));
-Fraud(1,1) = mean(FraudRows(:,3));
-Fraud(1,2) = mean(FraudRows(:,4));
-Fraud(1,3) = mean(FraudRows(:,2));
 NoFraudRows = table2array(trainingData(any(trainingData.FraudDetected == 0,2),:));
-NoFraud(1,1) = mean(NoFraudRows(:,3));
-NoFraud(1,2) = mean(NoFraudRows(:,4));
-NoFraud(1,3) = mean(NoFraudRows(:,2));
+for a = 1:3
+    for b = 1:3
+        Fraud(a,b) = mean(FraudRows(:,b+1));
+        NoFraud(a,b) = mean(NoFraudRows(:,b+1));
+    end
+end
 nexttile;
 
 % Display values
@@ -37,7 +37,7 @@ legend('Average age','Average no claims','Average car value');
 nexttile;
 % Stacked bars for negative and positive Confusion matrix values
 x = [1];
-y = [confusionMatrix(1,1) -confusionMatrix(1,2) ];
+y = [confusionMatrix(2,2) -confusionMatrix(1,1) ];
 bar(x,y,'stacked')
 legend('Correct Guesses','Incorrect Guesses');
 legend show;
