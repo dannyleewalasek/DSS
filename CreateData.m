@@ -1,5 +1,8 @@
 %{
 This script is used to generate training and testing data.
+The script creates data with a forced pattern just to allow the system to
+show it is able to accurately spot and use this pattern. Any real world
+data would also be able to be inserted if it was available.
 %}
 
 % Create tables used to store generated data.
@@ -16,13 +19,13 @@ customerInformation.Properties.VariableNames = {'Name','CarValue','Age','YearsNo
 for a = 1:100
     for b = 1:randi(10)
         if a < 50
-            customerInformation{height(customerInformation)+1,:} = ["Name" + a,  a ,a ,a];
+            customerInformation{height(customerInformation)+1,:} = ["Name" + a,a * (1 + randi(a)),17 + a ,round(a/10)];
             claims{height(claims)+1,:} = ["Name" + a ,0];
-            testData{height(testData)+1,:} = ["Name" + a,a  , a,a,0];
+            testData{height(testData)+1,:} = ["Name" + a,17 + a  , round(a/10),a * randi(1000),0];
         else
-            customerInformation{height(customerInformation)+1,:} = ["Name" + a, a ,a ,a];
+            customerInformation{height(customerInformation)+1,:} = ["Name" + a,  a * (1 + randi(a)) ,17 + a ,round(a/10)];
             claims{height(claims)+1,:} = ["Name" + a ,1];
-            testData{height(testData)+1,:} = ["Name" + a, a  , a,a,1];
+            testData{height(testData)+1,:} = ["Name" + a,17 + a  , round(a/10),a * randi(1000),1];
         end
     end
 end

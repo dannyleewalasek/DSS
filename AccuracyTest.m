@@ -98,13 +98,5 @@ writematrix(confusionMatrix);
 % Calculate model accuracy
 matrixAccuracy =(confusionMatrix(1,1) + confusionMatrix(2,2)) / (confusionMatrix(1,1) + confusionMatrix(2,2) + confusionMatrix(1,2) + confusionMatrix(2,1));
 
-
-% Display confusion matrix
-f = figure;
-uit = uitable(f,'Data',confusionMatrix,'Position',[20 20 200 100]);
-uit.ColumnName = {'+','-'};
-uit.ColumnEditable = true;
-uit.RowName = {'+','-'};
-
 % Display model accuracy
 disp("The accuracy of the model has been calculated at: " + matrixAccuracy * 100 + "%");
