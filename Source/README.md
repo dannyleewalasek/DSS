@@ -4,7 +4,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/dannyleewalasek/DSS">
-    <img src="images/Screen1.png" alt="Logo" width="320" height="320">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Naive Bayes classification</h3>
@@ -34,4 +34,4 @@ As well as calculating accuracy using confusion matrix and outputting visuals.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-To execute a full run of the system launch main script found under Source/
+To execute a full run of the system launch the "MAIN" script
