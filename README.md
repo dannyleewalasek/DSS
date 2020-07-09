@@ -7,11 +7,10 @@
     <img src="Images/Screen1.png" alt="Logo" width="500" height="320">
   </a>
 
-  <h3 align="center">Naive Bayes classification</h3>
+  <h3 align="center">multi-feature Naive Bayes classification model implementation</h3>
 
   <p align="center">
-    A small university project implementing a Naive Bayes model and training the model
-    to predict the likelihood of fraudulant insurance claims based on multiple features.
+An implementation of the multi-feature Naive Bayes model
     <br />
   </p>
 </p>
