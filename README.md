@@ -4,7 +4,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/dannyleewalasek/DSS">
-    <img src="Images/Screen1.png" alt="Logo" width="320" height="320">
+    <img src="Images/Screen1.png" alt="Logo" width="500" height="320">
   </a>
 
   <h3 align="center">Naive Bayes classification</h3>
@@ -19,7 +19,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 A small university project implementing a Naive Bayes model and training the model
 to predict the likelihood of fraudulant insurance claims based on multiple features.
