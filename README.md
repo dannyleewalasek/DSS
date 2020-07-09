@@ -20,7 +20,7 @@
 ## About The Project
 
 
-A small university project implementing a Naive Bayes model and training the model
+An implementation of the multi-feature Naive Bayes model and training the model
 to predict the likelihood of fraudulant insurance claims based on multiple features.
 As well as calculating accuracy using confusion matrix and outputting visuals.
 
