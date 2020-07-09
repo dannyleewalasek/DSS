@@ -4,7 +4,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/dannyleewalasek/DSS">
-    <img src="images/Screen1.png" alt="Logo" width="320" height="320">
+    <img src="Images/Screen1.png" alt="Logo" width="320" height="320">
   </a>
 
   <h3 align="center">Naive Bayes classification</h3>
